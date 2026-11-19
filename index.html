@@ -401,6 +401,72 @@
       display: inline-block;
       transition: background .15s, border-color .15s, transform .15s;
     }
+
+    /* ===== CATEGORIAS DO PORTFÓLIO ===== */
+    .portfolio-categories {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 0 auto 54px;
+      max-width: 1120px;
+    }
+    .portfolio-category {
+      min-height: 142px;
+      padding: 20px 20px 17px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--green-900);
+      text-decoration: none;
+      background: #fff;
+      border: 1px solid rgba(31,107,51,.13);
+      border-radius: var(--radius);
+      box-shadow: 0 5px 18px rgba(15,42,23,.045);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .portfolio-category:hover {
+      color: var(--green-900);
+      border-color: var(--green-600);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 26px rgba(15,42,23,.10);
+    }
+    .portfolio-category-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--cream);
+      font-size: 20px;
+    }
+    .portfolio-category-name {
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 700;
+      letter-spacing: -.2px;
+    }
+    .portfolio-category-action {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--green-700);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .portfolio-category-action span { font-size: 16px; }
+    .portfolio-category-all {
+      background: var(--green-900);
+      border-color: var(--green-900);
+      color: #fff;
+    }
+    .portfolio-category-all:hover { color: #fff; border-color: var(--green-700); background: var(--green-800); }
+    .portfolio-category-all .portfolio-category-icon { background: rgba(255,255,255,.12); color: #fff; }
+    .portfolio-category-all .portfolio-category-action { color: #e7d6a8; }
+    .partners-section-head { margin-top: 4px; }
     a.cat-chip:hover {
       background: #fff; border-color: var(--green-600);
       transform: translateY(-1px);
@@ -723,6 +789,16 @@
       }
       .port-nav-btn { flex: 1 1 auto; text-align: center; font-size: 13px; padding: 10px 12px; }
       .prod-row { grid-template-columns: 88px 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .portfolio-categories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .portfolio-categories { gap: 10px; margin-bottom: 40px; }
+      .portfolio-category { min-height: 130px; padding: 15px 13px; }
+      .portfolio-category-name { font-size: 14px; }
+      .portfolio-category-action { font-size: 11px; }
     }
 
     /* ===== ARTIGOS AGRICULTURA SINTRA ===== */
@@ -2218,6 +2294,55 @@
     <div class="container">
       <div class="section-head">
         <div class="tag">Portfólio</div>
+        <h2>Produtos em destaque</h2>
+        <p>Explore as principais categorias do nosso catálogo e descubra a variedade de produtos disponíveis nas lojas da Cooperativa.</p>
+      </div>
+
+      <div class="portfolio-categories" aria-label="Categorias do catálogo de produtos">
+        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Agricultura">
+          <span class="portfolio-category-icon" aria-hidden="true">🌱</span>
+          <span class="portfolio-category-name">Agricultura</span>
+          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Jardim">
+          <span class="portfolio-category-icon" aria-hidden="true">🌿</span>
+          <span class="portfolio-category-name">Jardim</span>
+          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Pecuária">
+          <span class="portfolio-category-icon" aria-hidden="true">🐄</span>
+          <span class="portfolio-category-name">Pecuária</span>
+          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Animais de Companhia">
+          <span class="portfolio-category-icon" aria-hidden="true">🐾</span>
+          <span class="portfolio-category-name">Animais de Companhia</span>
+          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Bricolage">
+          <span class="portfolio-category-icon" aria-hidden="true">🛠️</span>
+          <span class="portfolio-category-name">Bricolage</span>
+          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Drogaria">
+          <span class="portfolio-category-icon" aria-hidden="true">🧴</span>
+          <span class="portfolio-category-name">Drogaria</span>
+          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Produtos Regionais">
+          <span class="portfolio-category-icon" aria-hidden="true">🍯</span>
+          <span class="portfolio-category-name">Produtos Regionais</span>
+          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="portfolio-category portfolio-category-all" href="https://coopsintra.pt/produtos/">
+          <span class="portfolio-category-icon" aria-hidden="true">▦</span>
+          <span class="portfolio-category-name">Ver todo o catálogo</span>
+          <span class="portfolio-category-action">12.500 referências <span aria-hidden="true">↗</span></span>
+        </a>
+      </div>
+
+      <div class="section-head partners-section-head">
+        <div class="tag">Os nossos parceiros</div>
         <h2>As Marcas que representamos</h2>
         <p>Trabalhamos com as marcas mais prestigiadas do panorama agrícola.</p>
       </div>
