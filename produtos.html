@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catálogo de Produtos · Cooperativa Agrícola de Sintra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green-900: #0f2a17; --green-800: #1a4a28; --green-700: #1f6b33;
+      --cream: #f7f3ea; --muted: #5a6b5e; --border: rgba(31,107,51,.12);
+      --shadow: 0 10px 28px rgba(15,42,23,.08);
+      --gold: #c4a35a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Source Sans 3", system-ui, sans-serif; color: #1c2b20; background: #faf8f4; line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .topbar { background: var(--green-900); color: #fff; padding: 10px 0; font-size: 13px; }
+    .topbar .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .topbar a { color: #d4e8d8; }
+    header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 40; }
+    .header-inner { max-width: 1180px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; color: var(--green-900); }
+    .brand img { width: 46px; border-radius: 8px; }
+    .brand small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 10px; font-weight: 700; font-size: 13px; border: none; cursor: pointer; }
+    .btn-primary { background: var(--green-700); color: #fff; }
+    .btn-primary:hover { background: var(--green-800); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--green-700); color: var(--green-700); }
+    .btn-outline:hover { background: var(--cream); }
+
+    /* Catalog hero */
+    .catalog-hero {
+      background: linear-gradient(135deg, var(--green-900) 0%, var(--green-800) 100%);
+      color: #fff; padding: 32px 20px 28px; text-align: center;
+    }
+    .catalog-hero h1 { font-family: "Playfair Display", serif; font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 8px; }
+    .catalog-hero p { opacity: .85; max-width: 560px; margin: 0 auto 20px; font-size: 15px; }
+    .search-wrap {
+      max-width: 520px; margin: 0 auto; position: relative;
+    }
+    .search-wrap input {
+      width: 100%; padding: 14px 18px 14px 46px; border-radius: 12px; border: none;
+      font: inherit; font-size: 15px; background: #fff; color: #1c2b20;
+      box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    }
+    .search-wrap input:focus { outline: 2px solid var(--gold); }
+    .search-wrap svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    .search-meta { margin-top: 12px; font-size: 13px; opacity: .8; }
+
+    .page { max-width: 1180px; margin: 0 auto; padding: 22px 20px 48px; display: grid; grid-template-columns: 240px 1fr; gap: 22px; align-items: start; }
+    .side { position: sticky; top: 80px; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 12px; box-shadow: var(--shadow); }
+    .side h2 { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin: 4px 8px 10px; }
+    .nav-btn {
+      display: flex; align-items: center; justify-content: space-between; width: 100%;
+      text-align: left; background: transparent; border: none; border-radius: 10px;
+      padding: 11px 12px; font: inherit; font-weight: 700; font-size: 14px;
+      color: var(--green-900); cursor: pointer; transition: background .15s;
+    }
+    .nav-btn:hover { background: var(--cream); }
+    .nav-btn.active { background: var(--green-700); color: #fff; }
+    .nav-btn .count {
+      font-size: 11px; font-weight: 700; background: rgba(0,0,0,.08);
+      padding: 2px 8px; border-radius: 20px; min-width: 28px; text-align: center;
+    }
+    .nav-btn.active .count { background: rgba(255,255,255,.22); }
+
+    .main { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 22px; min-height: 480px; box-shadow: var(--shadow); }
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+    .panel-head h1 { font-family: "Playfair Display", serif; font-size: 1.55rem; color: var(--green-900); }
+    .panel-head .result-count { font-size: 13.5px; color: var(--muted); font-weight: 600; }
+    .panel-head p { color: var(--muted); font-size: 14.5px; margin-bottom: 14px; width: 100%; }
+    .sub-title { font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--green-700); margin: 18px 0 10px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: #fff;
+      display: flex; flex-direction: column; cursor: pointer; transition: transform .18s, box-shadow .18s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(15,42,23,.12); }
+    .card .img { height: 140px; display: grid; place-items: center; overflow: hidden; background: #f8faf8; }
+    .card .img img { width: 100%; height: 100%; object-fit: contain; padding: 8px; background: #fff; transition: transform .25s; }
+    .card:hover .img img { transform: scale(1.04); }
+    .card .body { padding: 12px 14px 14px; flex: 1; display: flex; flex-direction: column; }
+    .card h3 { font-size: 14px; color: var(--green-900); line-height: 1.35; margin-bottom: 6px; }
+    .card .forn { font-size: 12px; color: var(--muted); margin-top: auto; }
+    .card .view-detail { margin-top: 8px; font-size: 12.5px; font-weight: 700; color: var(--green-700); }
+    .card.hidden { display: none !important; }
+    .note { margin-top: 18px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 12px; }
+    .empty-state {
+      display: none; text-align: center; padding: 48px 20px; color: var(--muted);
+    }
+    .empty-state.visible { display: block; }
+    .empty-state strong { display: block; color: var(--green-900); font-size: 1.1rem; margin-bottom: 6px; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15,42,23,.55); z-index: 100;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; visibility: hidden; transition: opacity .2s, visibility .2s;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal {
+      background: #fff; border-radius: 18px; max-width: 520px; width: 100%;
+      max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 60px rgba(0,0,0,.25);
+      transform: translateY(12px); transition: transform .25s;
+    }
+    .modal-overlay.open .modal { transform: none; }
+    .modal-img { height: 240px; background: #f4f7f4; display: grid; place-items: center; border-radius: 18px 18px 0 0; overflow: hidden; }
+    .modal-img img { max-height: 100%; max-width: 100%; object-fit: contain; padding: 16px; }
+    .modal-body { padding: 22px 24px 26px; }
+    .modal-body .tag { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--green-700); margin-bottom: 6px; }
+    .modal-body h2 { font-family: "Playfair Display", serif; font-size: 1.35rem; color: var(--green-900); margin-bottom: 8px; line-height: 1.3; }
+    .modal-body .brand { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+    .modal-body .info { font-size: 14px; color: #3a4a3e; margin-bottom: 20px; line-height: 1.55; }
+    .modal-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .modal-close {
+      position: absolute; top: 14px; right: 14px; width: 36px; height: 36px;
+      border-radius: 50%; border: none; background: rgba(255,255,255,.9); cursor: pointer;
+      font-size: 20px; line-height: 1; color: var(--green-900); box-shadow: 0 2px 8px rgba(0,0,0,.12);
+      display: grid; place-items: center;
+    }
+    .modal { position: relative; }
+
+    footer { background: var(--green-900); color: #c5d8c9; padding: 24px 20px; text-align: center; font-size: 13.5px; }
+    footer a { color: #fff; font-weight: 600; }
+
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 1fr; }
+      .side { position: static; display: flex; flex-wrap: wrap; gap: 6px; }
+      .side h2 { width: 100%; }
+      .nav-btn { width: auto; }
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; }
+      .modal-img { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap"><span>Cooperativa Agrícola de Sintra · desde 1952</span><span><a href="index.html">← Voltar ao site</a></span></div></div>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="index.html"><img src="logo-coopsintra.png" alt="CAS" /><span>Cooperativa Agrícola de Sintra<small>Catálogo digital</small></span></a>
+      <a class="btn btn-primary" href="index.html#lojas">Ver lojas físicas</a>
+    </div>
+  </header>
+
+  <section class="catalog-hero">
+    <h1>Catálogo de produtos</h1>
+    <p>Vitrine digital dos artigos disponíveis nas lojas da Cooperativa. Pesquise, explore por categoria e confirme disponibilidade nas nossas lojas físicas.</p>
+    <div class="search-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" id="catalogSearch" placeholder="Pesquisar produto, marca ou referência…" autocomplete="off" />
+    </div>
+    <div class="search-meta" id="searchMeta">A mostrar todos os produtos</div>
+  </section>
+
+  <div class="page">
+    <aside class="side">
+      <h2>Categorias</h2>
+      <button type="button" class="nav-btn active" data-panel="stihl">Máquinas Stihl <span class="count" data-count="stihl">24</span></button>
+      <button type="button" class="nav-btn" data-panel="honda">Máquinas Honda <span class="count" data-count="honda">16</span></button>
+      <button type="button" class="nav-btn" data-panel="jardim">Jardinagem <span class="count" data-count="jardim">24</span></button>
+      <button type="button" class="nav-btn" data-panel="agricultura">Agricultura <span class="count" data-count="agricultura">28</span></button>
+      <button type="button" class="nav-btn" data-panel="pecuaria">Pecuária &amp; rações <span class="count" data-count="pecuaria">28</span></button>
+      <button type="button" class="nav-btn" data-panel="regionais">Produtos regionais <span class="count" data-count="regionais">16</span></button>
+    </aside>
+
+    <main class="main">
+      <!-- STIHL -->
+      <section class="panel active" id="stihl">
+        <div class="panel-head">
+          <h1>Máquinas Stihl</h1>
+          <span class="result-count" data-result="stihl">24 produtos</span>
+          <p>Equipamentos e artigos Stihl do nosso stock.</p>
+        </div>
+        <div class="sub-title">Destaques</div>
+        <div class="grid">
+          <article class="card" data-name="Corta-relva a bateria RMA 448" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://www.stihl.pt/content/dam/stihl/media/pim/105026.jpg" alt="RMA 448" loading="lazy" /></div>
+            <div class="body"><h3>Corta-relva a bateria RMA 448</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Motosserra Stihl (gama MS)" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://www.stihl.pt/content/dam/stihl/media/pim/118355.jpg" alt="Motosserra" loading="lazy" /></div>
+            <div class="body"><h3>Motosserra Stihl (gama MS)</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Motorroçadora / foice a motor Stihl" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://www.stihl.pt/content/dam/stihl/media/pim/40977.jpg" alt="Roçadora" loading="lazy" /></div>
+            <div class="body"><h3>Motorroçadora / foice a motor Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Soprador a gasolina BG 86" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://www.stihl.pt/content/dam/stihl/media/pim/33903.jpg" alt="Soprador" loading="lazy" /></div>
+            <div class="body"><h3>Soprador a gasolina BG 86</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <div class="sub-title">Mais artigos Stihl no stock</div>
+        <div class="grid">
+          <article class="card" data-name="Stihl 4241.440.3000 CABLAGEM PREFORMADA" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Cablagem" loading="lazy" /></div>
+            <div class="body"><h3>Stihl 4241.440.3000 CABLAGEM PREFORMADA</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="STIHL 3670.000.0064 CORRENTE CORTADA PICCO 64 ELOS" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Corrente" loading="lazy" /></div>
+            <div class="body"><h3>STIHL 3670.000.0064 CORRENTE CORTADA PICCO 64 ELOS</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="STIHL 3686.000.0068 CORRENTE CORTADA 26 R M 325 RM" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Corrente" loading="lazy" /></div>
+            <div class="body"><h3>STIHL 3686.000.0068 CORRENTE CORTADA 26 R M 325"RM</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl 0782.516.8606 care & clean Kit MS 7" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Kit" loading="lazy" /></div>
+            <div class="body"><h3>Stihl 0782.516.8606 care &amp; clean Kit MS 7</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl BA02.430.1400 modulo electronico" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Módulo" loading="lazy" /></div>
+            <div class="body"><h3>Stihl BA02.430.1400 modulo electronico</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl ga01.820.5000 prolongamento GTA26" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Prolongamento" loading="lazy" /></div>
+            <div class="body"><h3>Stihl ga01.820.5000 prolongamento GTA26</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl vb03.708.5800 bujao roscado" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Bujão" loading="lazy" /></div>
+            <div class="body"><h3>Stihl vb03.708.5800 bujao roscado</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl 4180.120.0601 carburador CQ-S98" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Carburador" loading="lazy" /></div>
+            <div class="body"><h3>Stihl 4180.120.0601 carburador CQ-S98</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl 4140.182.7602 Peça Tensora" data-brand="ANDREAS STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Peça tensora" loading="lazy" /></div>
+            <div class="body"><h3>Stihl 4140.182.7602 Peça Tensora</h3><div class="forn">ANDREAS STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl corrente e acessórios diversos" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Acessórios" loading="lazy" /></div>
+            <div class="body"><h3>Correntes e acessórios Stihl (stock)</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl óleo e lubrificantes" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Óleo" loading="lazy" /></div>
+            <div class="body"><h3>Óleos e lubrificantes Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl filtros e peças de manutenção" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Filtros" loading="lazy" /></div>
+            <div class="body"><h3>Filtros e peças de manutenção</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl EPI e proteção" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="EPI" loading="lazy" /></div>
+            <div class="body"><h3>Equipamento de proteção (EPI) Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl baterias e carregadores" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Baterias" loading="lazy" /></div>
+            <div class="body"><h3>Baterias e carregadores Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl acessórios de corte" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Corte" loading="lazy" /></div>
+            <div class="body"><h3>Acessórios de corte Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl peças originais diversas" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Peças" loading="lazy" /></div>
+            <div class="body"><h3>Peças originais Stihl (diversas)</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl ferramentas a bateria" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://www.stihl.pt/content/dam/stihl/media/pim/105026.jpg" alt="Bateria" loading="lazy" /></div>
+            <div class="body"><h3>Ferramentas a bateria Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl roçadoras profissionais" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://www.stihl.pt/content/dam/stihl/media/pim/40977.jpg" alt="Roçadora pro" loading="lazy" /></div>
+            <div class="body"><h3>Roçadoras profissionais Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl sopradores e aspiradores" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://www.stihl.pt/content/dam/stihl/media/pim/33903.jpg" alt="Soprador" loading="lazy" /></div>
+            <div class="body"><h3>Sopradores e aspiradores Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Stihl corta-sebes" data-brand="STIHL" data-cat="stihl">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Corta-sebes" loading="lazy" /></div>
+            <div class="body"><h3>Corta-sebes Stihl</h3><div class="forn">STIHL</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <p class="note">Fotos oficiais Stihl nos destaques · Confirme disponibilidade e preços nas lojas físicas da Cooperativa.</p>
+      </section>
+
+      <!-- HONDA -->
+      <section class="panel" id="honda">
+        <div class="panel-head">
+          <h1>Máquinas Honda</h1>
+          <span class="result-count" data-result="honda">16 produtos</span>
+          <p>Roçadoras, motoenxadas e geradores Honda.</p>
+        </div>
+        <div class="sub-title">Destaques</div>
+        <div class="grid">
+          <article class="card" data-name="Roçadora Honda UMK425 UE" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://static.thcdn.com/productimg/original/11251525-1675186686665642.jpg" alt="Roçadora Honda" loading="lazy" /></div>
+            <div class="body"><h3>Roçadora Honda UMK425 UE</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Motoenxada FJ 500" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Motoenxada" loading="lazy" /></div>
+            <div class="body"><h3>Motoenxada FJ 500</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Gerador Honda EU 22i" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=500&q=80" alt="Gerador" loading="lazy" /></div>
+            <div class="body"><h3>Gerador Honda EU 22i</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Corta-relva Honda HRX" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1592424002053-21f369ad6253?auto=format&fit=crop&w=500&q=80" alt="Corta-relva" loading="lazy" /></div>
+            <div class="body"><h3>Corta-relva Honda HRX</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <div class="sub-title">Peças e acessórios Honda</div>
+        <div class="grid">
+          <article class="card" data-name="Filtro de ar Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Filtro" loading="lazy" /></div>
+            <div class="body"><h3>Filtro de ar Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Vela de ignição Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Vela" loading="lazy" /></div>
+            <div class="body"><h3>Vela de ignição Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Óleo motor Honda 4T" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Óleo" loading="lazy" /></div>
+            <div class="body"><h3>Óleo motor Honda 4T</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Correia de transmissão Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Correia" loading="lazy" /></div>
+            <div class="body"><h3>Correia de transmissão Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Lâmina corta-relva Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Lâmina" loading="lazy" /></div>
+            <div class="body"><h3>Lâmina corta-relva Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Cabo de acelerador Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Cabo" loading="lazy" /></div>
+            <div class="body"><h3>Cabo de acelerador Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Kit manutenção Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Kit" loading="lazy" /></div>
+            <div class="body"><h3>Kit de manutenção Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Rodas e pneus corta-relva Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Rodas" loading="lazy" /></div>
+            <div class="body"><h3>Rodas e pneus corta-relva Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Acessórios roçadora Honda" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=500&q=80" alt="Acessórios" loading="lazy" /></div>
+            <div class="body"><h3>Acessórios roçadora Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Peças originais Honda diversas" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Peças" loading="lazy" /></div>
+            <div class="body"><h3>Peças originais Honda (diversas)</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Honda motores e recambios" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Motores" loading="lazy" /></div>
+            <div class="body"><h3>Motores e recambios Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Honda geradores portáteis" data-brand="Honda" data-cat="honda">
+            <div class="img"><img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=500&q=80" alt="Gerador" loading="lazy" /></div>
+            <div class="body"><h3>Geradores portáteis Honda</h3><div class="forn">Honda</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <p class="note">Confirme modelos e disponibilidade nas lojas físicas.</p>
+      </section>
+
+      <!-- JARDIM -->
+      <section class="panel" id="jardim">
+        <div class="panel-head">
+          <h1>Jardinagem</h1>
+          <span class="result-count" data-result="jardim">24 produtos</span>
+          <p>Ferramentas, rega e substratos.</p>
+        </div>
+        <div class="grid">
+          <article class="card" data-name="Substrato horta 50 lt" data-brand="Nutrofertil" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Substrato" loading="lazy" /></div>
+            <div class="body"><h3>Substrato horta 50 lt</h3><div class="forn">Nutrofertil</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Substrato relvados 50 lt" data-brand="Nutrofertil" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Relvado" loading="lazy" /></div>
+            <div class="body"><h3>Substrato relvados 50 lt</h3><div class="forn">Nutrofertil</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Substrato Profissional Acidofilas 70lt" data-brand="Nutrofertil" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1466692476866-aef1dfb1e735?auto=format&fit=crop&w=500&q=80" alt="Acidófilas" loading="lazy" /></div>
+            <div class="body"><h3>Substrato Profissional Acidofilas 70lt</h3><div class="forn">Nutrofertil</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Terra vegetal ensacada" data-brand="Nutrofertil" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Terra" loading="lazy" /></div>
+            <div class="body"><h3>Terra vegetal ensacada</h3><div class="forn">Nutrofertil</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Adubo orgânico granulado" data-brand="Nutrofertil" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Adubo" loading="lazy" /></div>
+            <div class="body"><h3>Adubo orgânico granulado</h3><div class="forn">Nutrofertil</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Regador plástico 10L" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Regador" loading="lazy" /></div>
+            <div class="body"><h3>Regador plástico 10L</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Mangueira de rega 25m" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=500&q=80" alt="Mangueira" loading="lazy" /></div>
+            <div class="body"><h3>Mangueira de rega 25m</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Carrinho de mão 85L" data-brand="Hidrocabril" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=500&q=80" alt="Carrinho" loading="lazy" /></div>
+            <div class="body"><h3>Carrinho de mão 85L c/ roda pneumática</h3><div class="forn">Hidrocabril</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Pá de jardim" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Pá" loading="lazy" /></div>
+            <div class="body"><h3>Pá de jardim</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ancinho e enxada" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Ferramentas" loading="lazy" /></div>
+            <div class="body"><h3>Ancinho e enxada</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Tesoura de poda" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Tesoura" loading="lazy" /></div>
+            <div class="body"><h3>Tesoura de poda</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Vasos e floreiras" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1466692476866-aef1dfb1e735?auto=format&fit=crop&w=500&q=80" alt="Vasos" loading="lazy" /></div>
+            <div class="body"><h3>Vasos e floreiras</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sementes de flores" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=500&q=80" alt="Sementes" loading="lazy" /></div>
+            <div class="body"><h3>Sementes de flores</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Bolbos de primavera" data-brand="Hidrocabril" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=500&q=80" alt="Bolbos" loading="lazy" /></div>
+            <div class="body"><h3>Bolbos de primavera</h3><div class="forn">Hidrocabril</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Fertilizante líquido plantas" data-brand="Nutrofertil" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Fertilizante" loading="lazy" /></div>
+            <div class="body"><h3>Fertilizante líquido plantas</h3><div class="forn">Nutrofertil</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Casca de pinheiro" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Casca" loading="lazy" /></div>
+            <div class="body"><h3>Casca de pinheiro</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Rede de proteção" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Rede" loading="lazy" /></div>
+            <div class="body"><h3>Rede de proteção</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Estacas e tutores" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Estacas" loading="lazy" /></div>
+            <div class="body"><h3>Estacas e tutores</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Insecticida biológico" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1466692476866-aef1dfb1e735?auto=format&fit=crop&w=500&q=80" alt="Insecticida" loading="lazy" /></div>
+            <div class="body"><h3>Insecticida biológico</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Luvas de jardinagem" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Luvas" loading="lazy" /></div>
+            <div class="body"><h3>Luvas de jardinagem</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Aspersores e gota-a-gota" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=500&q=80" alt="Aspersores" loading="lazy" /></div>
+            <div class="body"><h3>Aspersores e gota-a-gota</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Compostor doméstico" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" alt="Compostor" loading="lazy" /></div>
+            <div class="body"><h3>Compostor doméstico</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sementes hortícolas" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Sementes" loading="lazy" /></div>
+            <div class="body"><h3>Sementes hortícolas</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Kit rega automática" data-brand="Diversos" data-cat="jardim">
+            <div class="img"><img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=500&q=80" alt="Rega" loading="lazy" /></div>
+            <div class="body"><h3>Kit rega automática</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <p class="note">Imagens representativas · Confirme stock e marcas nas lojas.</p>
+      </section>
+
+      <!-- AGRICULTURA -->
+      <section class="panel" id="agricultura">
+        <div class="panel-head">
+          <h1>Agricultura</h1>
+          <span class="result-count" data-result="agricultura">28 produtos</span>
+          <p>Cereais, adubos, sementes e proteção de culturas.</p>
+        </div>
+        <div class="grid">
+          <article class="card" data-name="Alimpadura de Trigo 5kg" data-brand="Ribeiros" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Trigo" loading="lazy" /></div>
+            <div class="body"><h3>Alimpadura de Trigo 5kg (ribeiros)</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Alimpadura de Trigo 25kg" data-brand="Ribeiros" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Trigo" loading="lazy" /></div>
+            <div class="body"><h3>Alimpadura de Trigo 25kg (ribeiros)</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Alpista do Canada 1kg" data-brand="Rações Galrão" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Alpista" loading="lazy" /></div>
+            <div class="body"><h3>Alpista do Canada 1kg (galrao)</h3><div class="forn">Rações Galrão</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Milho grão 25kg" data-brand="Ribeiros" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Milho" loading="lazy" /></div>
+            <div class="body"><h3>Milho grão 25kg</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Cevada 25kg" data-brand="Ribeiros" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Cevada" loading="lazy" /></div>
+            <div class="body"><h3>Cevada 25kg</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Adubo NPK 20-10-10" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Adubo" loading="lazy" /></div>
+            <div class="body"><h3>Adubo NPK 20-10-10</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Superfosfato" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Superfosfato" loading="lazy" /></div>
+            <div class="body"><h3>Superfosfato</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sulfato de amónio" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Sulfato" loading="lazy" /></div>
+            <div class="body"><h3>Sulfato de amónio</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sementes de trigo" data-brand="Divers" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Sementes" loading="lazy" /></div>
+            <div class="body"><h3>Sementes de trigo</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sementes de aveia" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Aveia" loading="lazy" /></div>
+            <div class="body"><h3>Sementes de aveia</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Herbicida seletivo" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Herbicida" loading="lazy" /></div>
+            <div class="body"><h3>Herbicida seletivo</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Fungicida de contacto" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Fungicida" loading="lazy" /></div>
+            <div class="body"><h3>Fungicida de contacto</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Insecticida agrícola" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Insecticida" loading="lazy" /></div>
+            <div class="body"><h3>Insecticida agrícola</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Calda bordalesa" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Calda" loading="lazy" /></div>
+            <div class="body"><h3>Calda bordalesa</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Enxofre em pó" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Enxofre" loading="lazy" /></div>
+            <div class="body"><h3>Enxofre em pó</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Rede anti-pássaros" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Rede" loading="lazy" /></div>
+            <div class="body"><h3>Rede anti-pássaros</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Fio agrícola" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Fio" loading="lazy" /></div>
+            <div class="body"><h3>Fio agrícola</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sacos de ráfia" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Sacos" loading="lazy" /></div>
+            <div class="body"><h3>Sacos de ráfia</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Adubo foliar" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Foliar" loading="lazy" /></div>
+            <div class="body"><h3>Adubo foliar</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Corretivo de solo" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Corretivo" loading="lazy" /></div>
+            <div class="body"><h3>Corretivo de solo</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sementes forrageiras" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Forrageiras" loading="lazy" /></div>
+            <div class="body"><h3>Sementes forrageiras</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Milho híbrido" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Milho" loading="lazy" /></div>
+            <div class="body"><h3>Milho híbrido</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Tratamento de sementes" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Tratamento" loading="lazy" /></div>
+            <div class="body"><h3>Tratamento de sementes</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Armadilhas feromonas" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Armadilhas" loading="lazy" /></div>
+            <div class="body"><h3>Armadilhas feromonas</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Plástico agrícola" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=500&q=80" alt="Plástico" loading="lazy" /></div>
+            <div class="body"><h3>Plástico agrícola</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Estacas de vinha" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1506377247377-2c20d1e0c4bb?auto=format&fit=crop&w=500&q=80" alt="Vinha" loading="lazy" /></div>
+            <div class="body"><h3>Estacas de vinha</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Tutores de bambu" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Tutores" loading="lazy" /></div>
+            <div class="body"><h3>Tutores de bambu</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Rede sombra" data-brand="Diversos" data-cat="agricultura">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Sombra" loading="lazy" /></div>
+            <div class="body"><h3>Rede sombra</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <p class="note">Produtos agrícolas de uso profissional · Confirme disponibilidade nas lojas.</p>
+      </section>
+
+      <!-- PECUARIA -->
+      <section class="panel" id="pecuaria">
+        <div class="panel-head">
+          <h1>Pecuária &amp; rações</h1>
+          <span class="result-count" data-result="pecuaria">28 produtos</span>
+          <p>Rações e misturas para aves, coelhos e pecuária.</p>
+        </div>
+        <div class="grid">
+          <article class="card" data-name="Cevada Ração 5kg" data-brand="Ribeiros" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Cevada" loading="lazy" /></div>
+            <div class="body"><h3>Cevada Ração 5kg (ribeiros)</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Cevada Ração 25kg" data-brand="Ribeiros" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Cevada" loading="lazy" /></div>
+            <div class="body"><h3>Cevada Ração 25kg (ribeiros)</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="NANTA camperovo gra 5kg" data-brand="SDPAA" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Nanta" loading="lazy" /></div>
+            <div class="body"><h3>NANTA camperovo gra 5kg</h3><div class="forn">SDPAA</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração frangos 1ª fase" data-brand="Selecção" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Frangos" loading="lazy" /></div>
+            <div class="body"><h3>Selecção 115 frangos p/carne 1ª fase</h3><div class="forn">Raçoes Selecção</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração frangos 2ª fase" data-brand="Selecção" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Frangos" loading="lazy" /></div>
+            <div class="body"><h3>Selecção 115 frangos p/carne 2ª fase 25kg</h3><div class="forn">Raçoes Selecção</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração galinhas poedeiras" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Poedeiras" loading="lazy" /></div>
+            <div class="body"><h3>Ração galinhas poedeiras</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração coelhos" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Coelhos" loading="lazy" /></div>
+            <div class="body"><h3>Ração coelhos</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração ovinos" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Ovinos" loading="lazy" /></div>
+            <div class="body"><h3>Ração ovinos</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração bovinos" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Bovinos" loading="lazy" /></div>
+            <div class="body"><h3>Ração bovinos</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Farinha de peixe" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Farinha" loading="lazy" /></div>
+            <div class="body"><h3>Farinha de peixe</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Milho partido" data-brand="Ribeiros" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Milho" loading="lazy" /></div>
+            <div class="body"><h3>Milho partido</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Trigo ração" data-brand="Ribeiros" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Trigo" loading="lazy" /></div>
+            <div class="body"><h3>Trigo ração</h3><div class="forn">Ribeiros</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Mistura pássaros" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Pássaros" loading="lazy" /></div>
+            <div class="body"><h3>Mistura pássaros</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Grit para aves" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Grit" loading="lazy" /></div>
+            <div class="body"><h3>Grit para aves</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Suplemento vitamínico" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Vitamina" loading="lazy" /></div>
+            <div class="body"><h3>Suplemento vitamínico</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Sal mineral" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Sal" loading="lazy" /></div>
+            <div class="body"><h3>Sal mineral</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Bebedouro aves" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Bebedouro" loading="lazy" /></div>
+            <div class="body"><h3>Bebedouro aves</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Comedouro aves" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Comedouro" loading="lazy" /></div>
+            <div class="body"><h3>Comedouro aves</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ninho galinhas" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Ninho" loading="lazy" /></div>
+            <div class="body"><h3>Ninho galinhas</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Cama de aves" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Cama" loading="lazy" /></div>
+            <div class="body"><h3>Cama de aves</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração leitões" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Leitões" loading="lazy" /></div>
+            <div class="body"><h3>Ração leitões</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração suínos engorda" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Suínos" loading="lazy" /></div>
+            <div class="body"><h3>Ração suínos engorda</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Blocos de sal" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Sal" loading="lazy" /></div>
+            <div class="body"><h3>Blocos de sal</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Alpista" data-brand="Rações Galrão" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Alpista" loading="lazy" /></div>
+            <div class="body"><h3>Alpista</h3><div class="forn">Rações Galrão</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Painço" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Painço" loading="lazy" /></div>
+            <div class="body"><h3>Painço</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Girassol" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80" alt="Girassol" loading="lazy" /></div>
+            <div class="body"><h3>Girassol</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Mistura coelhos premium" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1589924691995-400dc9dacb43?auto=format&fit=crop&w=500&q=80" alt="Coelhos" loading="lazy" /></div>
+            <div class="body"><h3>Mistura coelhos premium</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Ração perus" data-brand="Diversos" data-cat="pecuaria">
+            <div class="img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=500&q=80" alt="Perus" loading="lazy" /></div>
+            <div class="body"><h3>Ração perus</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <p class="note">Rações e acessórios de pecuária · Confirme stock nas lojas.</p>
+      </section>
+
+      <!-- REGIONAIS -->
+      <section class="panel" id="regionais">
+        <div class="panel-head">
+          <h1>Produtos regionais</h1>
+          <span class="result-count" data-result="regionais">16 produtos</span>
+          <p>Azeite, vinhos, mel e mercearia agrícola.</p>
+        </div>
+        <div class="grid">
+          <article class="card" data-name="Azeite virgem extra de Brinches 0.75lt" data-brand="Cooperativa Agricola de Beja e Brinches" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=500&q=80" alt="Azeite" loading="lazy" /></div>
+            <div class="body"><h3>Azeite virgem extra de Brinches 0.75lt 0.6º</h3><div class="forn">Cooperativa Agricola de Beja e Brinches</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Azeite virgem extra de Brinches 2lt" data-brand="Cooperativa Agricola de Beja e Brinches" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=500&q=80" alt="Azeite" loading="lazy" /></div>
+            <div class="body"><h3>Azeite virgem extra de Brinches 2lt 0.6º</h3><div class="forn">Cooperativa Agricola de Beja e Brinches</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Azeite virgem extra de Brinches 5lt" data-brand="Cooperativa Agricola de Beja e Brinches" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=500&q=80" alt="Azeite" loading="lazy" /></div>
+            <div class="body"><h3>Azeite virgem extra de Brinches 5lt 0.6º</h3><div class="forn">Cooperativa Agricola de Beja e Brinches</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Vinho Tinto Serra da Lua bag in box 5lt" data-brand="Adega Regional de Colares" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=500&q=80" alt="Vinho" loading="lazy" /></div>
+            <div class="body"><h3>Vinho Tinto Serra da Lua bag in box 5lt</h3><div class="forn">Adega Regional de Colares</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Vinho Branco Biqueirao 10 lt Bag in Box" data-brand="Adega Regional de Colares" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=500&q=80" alt="Vinho" loading="lazy" /></div>
+            <div class="body"><h3>Vinho Branco Biqueirao 10 lt Bag in Box</h3><div class="forn">Adega Regional de Colares</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Mel de rosmaninho" data-brand="Diversos" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=500&q=80" alt="Mel" loading="lazy" /></div>
+            <div class="body"><h3>Mel de rosmaninho</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Gladiolo laranja" data-brand="Hidrocabril" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=500&q=80" alt="Gladiolo" loading="lazy" /></div>
+            <div class="body"><h3>Gladiolo laranja</h3><div class="forn">Hidrocabril</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Jarro calla laranja 14+" data-brand="Hidrocabril" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=500&q=80" alt="Calla" loading="lazy" /></div>
+            <div class="body"><h3>Jarro calla laranja 14+</h3><div class="forn">Hidrocabril</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Coroa imperial laranja" data-brand="Hidrocabril" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=500&q=80" alt="Coroa" loading="lazy" /></div>
+            <div class="body"><h3>Coroa imperial laranja</h3><div class="forn">Hidrocabril</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Bolbo cannas folha verde laranja" data-brand="Hidrocabril" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=500&q=80" alt="Cannas" loading="lazy" /></div>
+            <div class="body"><h3>Bolbo cannas folha verde laranja</h3><div class="forn">Hidrocabril</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Carro Mao Laranja 85 Lt" data-brand="Hidrocabril" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=500&q=80" alt="Carrinho" loading="lazy" /></div>
+            <div class="body"><h3>Carro Mao Laranja 85 Lt c/ Roda Pneumática</h3><div class="forn">Hidrocabril</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Carro Mão Retangular S Laranja" data-brand="DIKALOFER" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=500&q=80" alt="Carrinho" loading="lazy" /></div>
+            <div class="body"><h3>Carro Mão Retangular S Laranja JP Roda Anti-furo</h3><div class="forn">DIKALOFER</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Mel multifloral" data-brand="Diversos" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=500&q=80" alt="Mel" loading="lazy" /></div>
+            <div class="body"><h3>Mel multifloral</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Vinho Colares DOC" data-brand="Adega Regional de Colares" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=500&q=80" alt="Vinho" loading="lazy" /></div>
+            <div class="body"><h3>Vinho Colares DOC</h3><div class="forn">Adega Regional de Colares</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Azeite regional" data-brand="Diversos" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=500&q=80" alt="Azeite" loading="lazy" /></div>
+            <div class="body"><h3>Azeite regional</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+          <article class="card" data-name="Produtos da terra" data-brand="Diversos" data-cat="regionais">
+            <div class="img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=500&q=80" alt="Produtos" loading="lazy" /></div>
+            <div class="body"><h3>Produtos da terra (mercearia)</h3><div class="forn">Diversos</div><span class="view-detail">Ver detalhes →</span></div>
+          </article>
+        </div>
+        <p class="note">Produtos regionais e mercearia · Confirme disponibilidade nas lojas físicas.</p>
+      </section>
+
+      <div class="empty-state" id="emptyState">
+        <strong>Nenhum produto encontrado</strong>
+        <p>Tente outro termo de pesquisa ou escolha outra categoria.</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Product Modal -->
+  <div class="modal-overlay" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+      <div class="modal-img"><img id="modalImg" src="" alt="" /></div>
+      <div class="modal-body">
+        <div class="tag" id="modalCat"></div>
+        <h2 id="modalTitle"></h2>
+        <div class="brand" id="modalBrand"></div>
+        <div class="info">
+          Este produto faz parte da vitrine da Cooperativa Agrícola de Sintra.
+          Para confirmar disponibilidade, preço e condições, contacte ou visite uma das nossas lojas físicas.
+        </div>
+        <div class="modal-actions">
+          <a class="btn btn-primary" href="index.html#lojas">Ver lojas físicas</a>
+          <button type="button" class="btn btn-outline" id="modalCloseBtn">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Cooperativa Agrícola de Sintra · <a href="index.html">Página inicial</a> · <a href="https://coopsintra.pt" target="_blank" rel="noopener">coopsintra.pt</a></footer>
+
+  <script>
+    (function () {
+      var catLabels = {
+        stihl: 'Máquinas Stihl',
+        honda: 'Máquinas Honda',
+        jardim: 'Jardinagem',
+        agricultura: 'Agricultura',
+        pecuaria: 'Pecuária & rações',
+        regionais: 'Produtos regionais'
+      };
+
+      function showPanel(id) {
+        document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+        document.querySelectorAll('.nav-btn').forEach(function (b) { b.classList.remove('active'); });
+        var panel = document.getElementById(id);
+        if (panel) panel.classList.add('active');
+        var btn = document.querySelector('.nav-btn[data-panel="' + id + '"]');
+        if (btn) btn.classList.add('active');
+        applySearch();
+      }
+
+      document.querySelectorAll('.nav-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          showPanel(btn.getAttribute('data-panel'));
+          history.replaceState(null, '', '#' + btn.getAttribute('data-panel'));
+        });
+      });
+
+      var hash = (location.hash || '').replace('#', '');
+      if (hash && document.getElementById(hash)) showPanel(hash);
+
+      // Search
+      var searchInput = document.getElementById('catalogSearch');
+      var searchMeta = document.getElementById('searchMeta');
+      var emptyState = document.getElementById('emptyState');
+
+      function applySearch() {
+        var q = (searchInput.value || '').trim().toLowerCase();
+        var activePanel = document.querySelector('.panel.active');
+        if (!activePanel) return;
+        var cards = activePanel.querySelectorAll('.card');
+        var visible = 0;
+        cards.forEach(function (card) {
+          var name = (card.getAttribute('data-name') || '').toLowerCase();
+          var brand = (card.getAttribute('data-brand') || '').toLowerCase();
+          var match = !q || name.indexOf(q) !== -1 || brand.indexOf(q) !== -1;
+          card.classList.toggle('hidden', !match);
+          if (match) visible++;
+        });
+        var pid = activePanel.id;
+        var resultEl = activePanel.querySelector('[data-result="' + pid + '"]');
+        if (resultEl) resultEl.textContent = visible + (visible === 1 ? ' produto' : ' produtos');
+        if (q) {
+          searchMeta.textContent = visible + ' resultado' + (visible !== 1 ? 's' : '') + ' em «' + (catLabels[pid] || pid) + '»';
+        } else {
+          searchMeta.textContent = 'A mostrar todos os produtos';
+        }
+        emptyState.classList.toggle('visible', visible === 0);
+        // hide sub-titles if no visible cards under them is complex; leave as is
+      }
+
+      searchInput.addEventListener('input', applySearch);
+
+      // Modal
+      var modal = document.getElementById('productModal');
+      var modalImg = document.getElementById('modalImg');
+      var modalTitle = document.getElementById('modalTitle');
+      var modalBrand = document.getElementById('modalBrand');
+      var modalCat = document.getElementById('modalCat');
+
+      function openModal(card) {
+        var img = card.querySelector('img');
+        modalImg.src = img ? img.src : '';
+        modalImg.alt = img ? img.alt : '';
+        modalTitle.textContent = card.getAttribute('data-name') || card.querySelector('h3').textContent;
+        modalBrand.textContent = card.getAttribute('data-brand') || '';
+        modalCat.textContent = catLabels[card.getAttribute('data-cat')] || '';
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.card').forEach(function (card) {
+        card.addEventListener('click', function () { openModal(card); });
+      });
+
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      // Update counts on load
+      document.querySelectorAll('.panel').forEach(function (panel) {
+        var n = panel.querySelectorAll('.card').length;
+        var c = document.querySelector('.count[data-count="' + panel.id + '"]');
+        if (c) c.textContent = n;
+        var r = panel.querySelector('[data-result="' + panel.id + '"]');
+        if (r) r.textContent = n + (n === 1 ? ' produto' : ' produtos');
+      });
+    })();
+  </script>
+</body>
+</html>

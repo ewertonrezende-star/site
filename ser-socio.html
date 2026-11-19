@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ser Associado | Cooperativa Agrícola de Sintra</title>
+  <meta name="description" content="Como se tornar associado da Cooperativa Agrícola de Sintra. Capital, documentos, estatutos e formulário de inscrição." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green-900: #0f2a17;
+      --green-800: #154d24;
+      --green-700: #1a5f2a;
+      --green-600: #1f6b33;
+      --cream: #f7f3ea;
+      --cream-dark: #efe8d8;
+      --gold: #c9a24a;
+      --gold-dark: #a8842e;
+      --text: #1c2418;
+      --muted: #5a6b5e;
+      --white: #ffffff;
+      --shadow: 0 12px 40px rgba(15, 42, 23, 0.12);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.55;
+      font-size: 16px;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(720px, 92%); margin: 0 auto; }
+
+    header {
+      background: var(--green-900);
+      color: #fff;
+      padding: 16px 0;
+    }
+    header .container {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-weight: 700; font-size: 17px;
+    }
+    .brand small {
+      display: block; font-family: "Source Sans 3", sans-serif;
+      font-size: 11px; font-weight: 600; letter-spacing: 1px;
+      color: var(--gold); text-transform: uppercase; margin-top: 2px;
+    }
+    .back {
+      font-size: 13.5px; font-weight: 600;
+      color: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.35);
+      padding: 8px 14px; border-radius: 999px;
+    }
+    .back:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+    .hero-mini {
+      background: linear-gradient(120deg, var(--green-800), var(--green-900));
+      color: #fff; padding: 40px 0 36px; text-align: center;
+    }
+    .hero-mini .tag {
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+    }
+    .hero-mini h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.7rem, 4vw, 2.2rem);
+      margin-bottom: 10px;
+    }
+    .hero-mini p { opacity: .9; max-width: 480px; margin: 0 auto; font-size: 15px; }
+
+    section { padding: 36px 0 48px; }
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(31,107,51,.1);
+      margin-bottom: 22px;
+    }
+    .card h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.3rem; color: var(--green-900);
+      margin-bottom: 14px;
+    }
+    .card p, .card li {
+      font-size: 15px; color: var(--text); margin-bottom: 10px; line-height: 1.6;
+    }
+    .card ul { padding-left: 18px; margin-bottom: 12px; }
+    .card strong { color: var(--green-800); }
+
+    .docs {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+    }
+    .docs a {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--cream);
+      border: 1px solid rgba(31,107,51,.2);
+      color: var(--green-800);
+      padding: 10px 16px; border-radius: 999px;
+      font-size: 13.5px; font-weight: 600;
+    }
+    .docs a:hover {
+      background: #fff;
+      border-color: var(--green-600);
+      box-shadow: 0 4px 14px rgba(15,42,23,.08);
+    }
+
+    .form-card label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--green-800); margin-bottom: 4px; margin-top: 14px;
+    }
+    .form-card input, .form-card select, .form-card textarea {
+      width: 100%; padding: 11px 12px; border-radius: 8px;
+      border: 1px solid rgba(31,107,51,.25);
+      font-family: inherit; font-size: 14.5px;
+      background: #fafaf7;
+    }
+    .form-card input:focus, .form-card textarea:focus, .form-card select:focus {
+      outline: 2px solid var(--green-600); border-color: transparent;
+    }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .check {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-top: 16px; font-size: 13.5px; color: var(--muted);
+    }
+    .check input { width: auto; margin-top: 3px; flex-shrink: 0; }
+    button[type=submit] {
+      width: 100%; margin-top: 22px;
+      background: var(--green-700); color: #fff;
+      border: none; padding: 14px; border-radius: 999px;
+      font-weight: 700; font-size: 15px; cursor: pointer;
+      font-family: inherit;
+    }
+    button[type=submit]:hover { background: var(--green-800); }
+
+    footer {
+      text-align: center; padding: 24px 0 32px;
+      font-size: 13px; color: var(--muted);
+    }
+    footer a { color: var(--green-700); font-weight: 600; }
+
+    @media (max-width: 560px) {
+      .row2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="brand">
+        Cooperativa Agrícola de Sintra
+        <small>Desde 1952</small>
+      </div>
+      <a class="back" href="index.html">← Voltar ao site</a>
+    </div>
+  </header>
+
+  <div class="hero-mini">
+    <div class="container">
+      <div class="tag">Associados</div>
+      <h1>Como se tornar associado</h1>
+      <p>Capital, documentos, estatutos e pedido de inscrição online.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="card">
+        <h2>Condições de admissão</h2>
+        <p>
+          A admissão de associado obriga a uma <strong>subscrição de capital de 100 €</strong>
+          (vinte títulos de capital de 5 € cada), paga no acto da inscrição.
+        </p>
+        <p>
+          O candidato obriga-se a permanecer como associado por um período mínimo de
+          <strong>dois anos</strong>. Após esse período pode pedir a demissão e
+          receber de volta o capital subscrito na totalidade.
+        </p>
+        <p><strong>Documentos necessários:</strong></p>
+        <ul>
+          <li><strong>Nome individual:</strong> Proposta de Associado correctamente preenchida e assinada + 100 €.</li>
+          <li><strong>Sociedades ou associações:</strong> Proposta assinada pelo representante legal + carimbo da firma + fotocópia do contribuinte + 100 €.</li>
+        </ul>
+        <p>
+          Os associados podem usufruir de <strong>consultoria técnica </strong>
+          por Engenheiro Agrícola credenciado e utilizar as <strong>câmaras frigoríficas</strong>
+          do posto de vendas em Colares (conforme tabela de preços).
+        </p>
+
+        <div class="docs">
+          <a href="Estatutos_Cooperativa_Agricola_Sintra.pdf" target="_blank" rel="noopener" download>📄 Estatutos (PDF)</a>
+          <a href="Admissao_de_Socio.pdf" target="_blank" rel="noopener" download>📄 Informação de admissão</a>
+          <a href="Ficha_Inscricao_Socio.pdf" target="_blank" rel="noopener" download>📄 Ficha para imprimir</a>
+        </div>
+      </div>
+
+      <div class="card form-card">
+        <h2>Pedido de inscrição online</h2>
+        <p style="margin-bottom:16px; color:var(--muted); font-size:14px;">
+          Preencha o formulário. O pedido será enviado para <strong>geral@coopsintra.pt</strong>.
+          A secretaria entrará em contacto consigo.
+        </p>
+        <form action="https://formsubmit.co/geral@coopsintra.pt" method="POST">
+          <input type="hidden" name="_subject" value="Pedido de inscrição de associado — Cooperativa Agrícola de Sintra">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none">
+
+          <label for="nome">Nome completo *</label>
+          <input type="text" id="nome" name="nome" required placeholder="Nome completo">
+
+          <div class="row2">
+            <div>
+              <label for="nif">NIF *</label>
+              <input type="text" id="nif" name="nif" required placeholder="NIF">
+            </div>
+            <div>
+              <label for="tipo">Tipo de inscrição *</label>
+              <select id="tipo" name="tipo" required>
+                <option value="">Seleccione...</option>
+                <option value="Individual">Nome individual</option>
+                <option value="Sociedade">Sociedade / Associação</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="email">E-mail *</label>
+              <input type="email" id="email" name="email" required placeholder="email@exemplo.pt">
+            </div>
+            <div>
+              <label for="telefone">Telefone / Telemóvel *</label>
+              <input type="tel" id="telefone" name="telefone" required placeholder="9xx xxx xxx">
+            </div>
+          </div>
+
+          <label for="morada">Morada</label>
+          <input type="text" id="morada" name="morada" placeholder="Rua, número, localidade, CP">
+
+          <label for="freguesia">Freguesia / Concelho</label>
+          <input type="text" id="freguesia" name="freguesia_concelho" placeholder="Ex.: Colares / Sintra">
+
+          <label for="actividade">Actividade agrícola principal</label>
+          <input type="text" id="actividade" name="actividade" placeholder="Ex.: hortícolas, frutícolas, jardinagem...">
+
+          <label for="obs">Observações</label>
+          <textarea id="obs" name="observacoes" rows="3" placeholder="Informações adicionais (opcional)"></textarea>
+
+          <label class="check">
+            <input type="checkbox" name="aceito_estatutos" value="Sim" required>
+            <span>Li e aceito as condições de admissão e os Estatutos da Cooperativa. Comprometo-me a subscrever o capital mínimo de 100 €.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" name="autorizo_contacto" value="Sim" required>
+            <span>Autorizo o contacto institucional e o tratamento dos dados para fins de admissão de associado.</span>
+          </label>
+
+          <button type="submit">Enviar pedido de inscrição</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      Cooperativa Agrícola de Sintra, C.R.L. · NIF 500 075 514<br>
+      <a href="index.html">Voltar ao site principal</a>
+    </div>
+  </footer>
+</body>
+</html>

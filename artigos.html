@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Artigos | Cooperativa Agrícola de Sintra</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+<style>
+:root{--green-900:#0f2a17;--green-800:#154d24;--green-700:#1a5f2a;--green-600:#1f6b33;--green-100:#e8f5e9;--cream:#f7f3ea;--gold:#c9a24a;--gold-dark:#a8842e;--text:#1c2418;--muted:#5a6b5e;--white:#fff;--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:"Source Sans 3",system-ui,sans-serif;color:var(--text);background:var(--cream);line-height:1.55}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+.container{width:min(1120px,92%);margin:0 auto}
+header{position:sticky;top:0;z-index:50;background:rgba(247,243,234,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(31,107,51,.12)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px}
+.brand{font-family:"Playfair Display",serif;font-weight:700;font-size:17px;color:var(--green-800)}
+.brand small{display:block;font-family:"Source Sans 3",sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;color:var(--gold-dark);text-transform:uppercase}
+.back{font-size:13.5px;font-weight:600;color:var(--green-700);border:1.5px solid rgba(31,107,51,.25);padding:8px 14px;border-radius:999px}
+.back:hover{background:var(--green-100)}
+.hero-mini{background:linear-gradient(120deg,var(--green-800),var(--green-900));color:#fff;padding:40px 0 36px;text-align:center}
+.hero-mini .tag{font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.hero-mini h1{font-family:"Playfair Display",serif;font-size:clamp(1.7rem,4vw,2.3rem);margin-bottom:8px}
+.hero-mini p{opacity:.9;max-width:520px;margin:0 auto;font-size:15px}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:28px;padding:32px 0 56px;align-items:start}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{position:static!important}}
+.sidebar{position:sticky;top:76px;background:var(--white);border-radius:var(--radius);border:1px solid rgba(31,107,51,.1);padding:18px 0;box-shadow:0 4px 20px rgba(15,42,23,.06)}
+.sidebar h3{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green-800);padding:0 18px 10px;border-bottom:3px solid var(--gold);margin:0 18px 6px;display:inline-block}
+.sidebar ul{list-style:none}
+.sidebar a{display:block;padding:10px 18px;font-size:13.5px;font-weight:600;color:var(--muted);border-bottom:1px solid rgba(31,107,51,.07)}
+.sidebar a:hover,.sidebar a.active{color:var(--green-800);background:var(--green-100)}
+.panel{display:none}.panel.active{display:block}
+.panel h2{font-family:"Playfair Display",serif;font-size:1.5rem;color:var(--green-900);margin-bottom:6px}
+.panel .lead{color:var(--muted);font-size:14.5px;margin-bottom:22px}
+.artigos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media(max-width:640px){.artigos-grid{grid-template-columns:1fr}}
+.artigo{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:0 6px 22px rgba(15,42,23,.07);border:1px solid rgba(31,107,51,.08);display:flex;flex-direction:column}
+.artigo-img{aspect-ratio:16/10;overflow:hidden;background:#e8efe9}
+.artigo-img img{width:100%;height:100%;object-fit:cover}
+.artigo-body{padding:14px 15px 16px;flex:1;display:flex;flex-direction:column}
+.artigo-tag{font-size:10.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:var(--green-600);margin-bottom:5px}
+.artigo h3{font-size:.98rem;color:var(--green-900);margin-bottom:8px;line-height:1.3;flex:1}
+.artigo .fonte{font-size:11.5px;color:var(--muted);opacity:.9;margin-bottom:8px}
+.artigo a{color:var(--green-700);font-weight:700;font-size:13px}
+.artigo a:hover{text-decoration:underline}
+.modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(15,42,23,.55);align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;max-width:720px;width:100%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+.modal-close{position:absolute;top:12px;right:14px;border:none;background:var(--cream);width:36px;height:36px;border-radius:50%;font-size:22px;cursor:pointer;color:var(--green-800);z-index:2}
+.modal-body{padding:28px 26px 26px}
+.modal-body .tag{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--green-600);margin-bottom:8px}
+.modal-body h2{font-family:"Playfair Display",serif;font-size:1.35rem;color:var(--green-900);margin-bottom:12px;line-height:1.25}
+.modal-body p{margin-bottom:10px;font-size:14.5px}
+.modal-body img.cover{width:100%;border-radius:10px;margin-bottom:14px;max-height:280px;object-fit:cover}
+.btn-src{display:inline-flex;background:var(--gold);color:var(--green-900);padding:11px 16px;border-radius:999px;font-weight:700;font-size:14px}
+footer{text-align:center;padding:24px 0 32px;font-size:13px;color:var(--muted)}
+footer a{color:var(--green-700);font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="brand">Cooperativa Agrícola de Sintra<small>Desde 1952</small></a>
+    <a class="back" href="index.html">← Voltar ao site</a>
+  </div>
+</header>
+<div class="hero-mini">
+  <div class="container">
+    <div class="tag">Cooperativa Agrícola de Sintra</div>
+    <h1>Artigos</h1>
+    <p>Imprensa, temas técnicos e dossiers — escolha um assunto à esquerda.</p>
+  </div>
+</div>
+<div class="container layout">
+  <aside class="sidebar">
+    <h3>Temas</h3>
+    <ul>
+        <li><a href="#coop" class="active" data-panel="coop">Cooperativa &amp; Imprensa</a></li>
+        <li><a href="#tecnicos" data-panel="tecnicos">Artigos Técnicos</a></li>
+        <li><a href="#fitofarmacos" data-panel="fitofarmacos">Fitofarmacêuticos</a></li>
+        <li><a href="#fertilizantes" data-panel="fertilizantes">Fertilizantes</a></li>
+        <li><a href="#inovacao" data-panel="inovacao">Inovação</a></li>
+        <li><a href="#mercados" data-panel="mercados">Mercados e Cotações</a></li>
+        <li><a href="#recomendacoes" data-panel="recomendacoes">Recomendações Agroflorestais</a></li>
+    </ul>
+  </aside>
+  <main>
+      <div class="panel active" id="panel-coop">
+        <h2>Cooperativa &amp; Imprensa</h2>
+        <p class="lead">Notícias e atualidade agrícola em Sintra, reportagens e entrevistas.</p>
+        <div class="artigos-grid">
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://d3s5ffo39ul8xr.cloudfront.net/uploads/2024/11/IMG_20241003_151109-540x360.jpg" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Entrevista</div>
+              <h3>Jorge Rafael: servir cada vez melhor os associados e clientes</h3>
+              <div class="fonte">Fonte: O Correio da Linha</div>
+              <a href="#" class="open-artigo" data-modal="jorge">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Reportagem</div>
+              <h3>A Cooperativa renasce para apoiar o sector</h3>
+              <div class="fonte">Fonte: Jornal da Região</div>
+              <a href="#" class="open-artigo" data-modal="renasce">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Outubro 2026</div>
+              <h3>Projetos de Agricultura Regenerativa em Sintra-Cascais recebem novo financiamento</h3>
+              <div class="fonte">Fonte: Notícias regionais · Sintra-Cascais</div>
+              <a href="#" class="open-artigo" data-modal="regen">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Outubro 2026</div>
+              <h3>13.º Festival da Maçã Reineta celebra a tradição agrícola em Fontanelas</h3>
+              <div class="fonte">Fonte: Cooperativa Agrícola de Sintra / região</div>
+              <a href="#" class="open-artigo" data-modal="reineta">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Junho 2026</div>
+              <h3>8.ª edição da AGROARUIL destaca a Agricultura Regenerativa</h3>
+              <div class="fonte">Fonte: AGROARUIL · Aruil</div>
+              <a href="#" class="open-artigo" data-modal="agroaruil">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Junho 2026</div>
+              <h3>Câmara Municipal de Sintra inaugura nova Horta Solidária em Mira-Sintra</h3>
+              <div class="fonte">Fonte: Câmara Municipal de Sintra</div>
+              <a href="#" class="open-artigo" data-modal="horta">Ler artigo →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="panel" id="panel-tecnicos">
+        <h2>Artigos Técnicos</h2>
+        <p class="lead">Conteúdos práticos e de estudo para o dia a dia no campo.</p>
+        <div class="artigos-grid">
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">PAC / PEPAC</div>
+              <h3>Estudo de caso da GMN e a PAC com enfoque no PEPAC em Portugal</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="pac">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://www.agroportal.pt/wp-content/uploads/2025/04/artigo-rcas-autoctones-750x375.png" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Pecuária</div>
+              <h3>Resistência genética: raças autóctones e carraças</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="racas">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Viticultura</div>
+              <h3>Adaptação da viticultura às alterações climáticas</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="viticultura">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Olival</div>
+              <h3>Impacto das alterações climáticas na distribuição e produtividade do olival</h3>
+              <div class="fonte">Fonte: CNC Alterações Climáticas</div>
+              <a href="#" class="open-artigo" data-modal="olival">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Floresta</div>
+              <h3>Pinheiro manso e alterações climáticas — perspetiva ecofisiológica</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="pinheiro">Ler artigo →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="panel" id="panel-fitofarmacos">
+        <h2>Fitofarmacêuticos</h2>
+        <p class="lead">Uso de pesticidas, alertas fitossanitários e proteção das culturas.</p>
+        <div class="artigos-grid">
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1543418219-44e30b057fea?auto=format&fit=crop&w=900&q=80" alt="Vinhas" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Vinha</div>
+              <h3>Uso de pesticidas nas vinhas portuguesas pode tornar-se um problema</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="vinhas_pest">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Tecnologia</div>
+              <h3>Tecnologia para reduzir o desperdício de pesticidas nas culturas</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="desperdicio">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1507598641400-ec3536ba81bc?auto=format&fit=crop&w=900&q=80" alt="Citrinos" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Alerta</div>
+              <h3>Alerta Diaphorina citri</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="diaphorina">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=900&q=80" alt="Fogo bacteriano" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Doença</div>
+              <h3>Fogo bacteriano (Erwinia amylovora) — atualização das zonas demarcadas</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="fogo">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">DGAV</div>
+              <h3>Mais de 16.500 contentores sob controlo fitossanitário em Sines (2025)</h3>
+              <div class="fonte">Fonte: DGAV</div>
+              <a href="#" class="open-artigo" data-modal="dgav">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=900&q=80" alt="Pêra Rocha" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Pêra Rocha</div>
+              <h3>Cientistas travam doenças que ameaçam a pêra Rocha no Oeste</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="pera">Ler artigo →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="panel" id="panel-fertilizantes">
+        <h2>Fertilizantes</h2>
+        <p class="lead">Inovação e produtos na fertilização agrícola.</p>
+        <div class="artigos-grid">
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Patente</div>
+              <h3>Fertiberia obtém a patente europeia de NSafe</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="nsafe">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Biotecnologia</div>
+              <h3>ADP Fertilizantes obtém parecer ZERYA nos produtos biotecnológicos</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="adp">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1655130944329-b3a63166f6b5?auto=format&fit=crop&w=900&q=80" alt="Fertilizantes baixas emissões" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Sustentabilidade</div>
+              <h3>Consórcio funda Fertighy para fertilizantes com baixas emissões</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="fertighy">Ler artigo →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="panel" id="panel-inovacao">
+        <h2>Inovação</h2>
+        <p class="lead">Genética, robótica, NTG e culturas mais resilientes.</p>
+        <div class="artigos-grid">
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://www.agroportal.pt/wp-content/uploads/2026/05/nennieinszweidrei-sheep-4036616_1280-750x375.jpg" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Genética</div>
+              <h3>Genética e dados para selecionar ovinos mais resistentes ao calor</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="ovinos">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://www.agroportal.pt/wp-content/uploads/2025/06/agriculture-4208863_1920-750x375.jpg" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Robótica</div>
+              <h3>Robótica agrícola avança, mas fiabilidade e retorno travam a adoção</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="robotica">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://www.agroportal.pt/wp-content/uploads/2025/06/dna-7090994_1920-750x375.jpg" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">NTG</div>
+              <h3>NTG: Bruxelas prepara regras para aplicar o novo regulamento</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="ntg">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Projeto europeu</div>
+              <h3>Portugal integra projeto europeu para batata e arroz mais resilientes</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="batata_arroz">Ler artigo →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="panel" id="panel-mercados">
+        <h2>Mercados e Cotações</h2>
+        <p class="lead">Cotações semanais (26 de outubro a 1 de novembro de 2026).</p>
+        <div class="artigos-grid">
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Cotações</div>
+              <h3>Frutos frescos e secos (26 out – 1 nov 2026)</h3>
+              <div class="fonte">Fonte: Agroportal / GPP</div>
+              <a href="#" class="open-artigo" data-modal="cot_frutos">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Cotações</div>
+              <h3>Ovinos e caprinos (26 out – 1 nov 2026)</h3>
+              <div class="fonte">Fonte: Agroportal / GPP</div>
+              <a href="#" class="open-artigo" data-modal="cot_ovinos">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Cotações</div>
+              <h3>Cereais (26 out – 1 nov 2026)</h3>
+              <div class="fonte">Fonte: Agroportal / GPP</div>
+              <a href="#" class="open-artigo" data-modal="cot_cereais">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Cotações</div>
+              <h3>Flores e folhagens (26 out – 1 nov 2026)</h3>
+              <div class="fonte">Fonte: Agroportal / GPP</div>
+              <a href="#" class="open-artigo" data-modal="cot_flores">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Cotações</div>
+              <h3>Produtos hortícolas (26 out – 1 nov 2026)</h3>
+              <div class="fonte">Fonte: Agroportal / GPP</div>
+              <a href="#" class="open-artigo" data-modal="cot_hort">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Cotações</div>
+              <h3>Aves e ovos (26 out – 1 nov 2026)</h3>
+              <div class="fonte">Fonte: Agroportal / GPP</div>
+              <a href="#" class="open-artigo" data-modal="cot_aves">Ler artigo →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="panel" id="panel-recomendacoes">
+        <h2>Recomendações Agroflorestais</h2>
+        <p class="lead">Avisos agrícolas e orientações para as culturas.</p>
+        <div class="artigos-grid">
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80" alt="Avisos agrícolas" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Avisos 17-07-2026</div>
+              <h3>Vinha, citrinos, hortícolas e ornamentais</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="aviso1">Ler artigo →</a>
+            </div>
+          </article>
+          <article class="artigo">
+            <div class="artigo-img"><img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80'" /></div>
+            <div class="artigo-body">
+              <div class="artigo-tag">Avisos 15-06-2026</div>
+              <h3>Vinha e pomóideas</h3>
+              <div class="fonte">Fonte: Agroportal</div>
+              <a href="#" class="open-artigo" data-modal="aviso2">Ler artigo →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+  </main>
+</div>
+
+<section style="background:var(--white);padding:24px 0;border-top:1px solid rgba(31,107,51,.1);">
+  <div class="container" style="max-width:800px;">
+    <p style="font-size:13px;color:var(--muted);line-height:1.55;margin:0;">
+      Os artigos de terceiros listados nesta página (incluindo Agroportal, DGAV, CNC e órgãos de comunicação social)
+      são da exclusiva responsabilidade das respetivas fontes e autores.
+      A Cooperativa Agrícola de Sintra limita-se a organizar o acesso a estes conteúdos para informação dos associados e leitores,
+      indicando a fonte e o autor quando disponível. O texto integral encontra-se no site original (botão em cada artigo).
+    </p>
+  </div>
+</section>
+
+  <div class="modal-overlay" id="modal-jorge" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Entrevista</div>
+        <h2>Jorge Rafael: servir cada vez melhor os associados e clientes</h2>
+        <img class="cover" src="https://d3s5ffo39ul8xr.cloudfront.net/uploads/2024/11/IMG_20241003_151109-540x360.jpg" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Raquel Luís · Foto: Paulo Rodrigues</p><p>A Cooperativa Agrícola de Sintra, fundada em 1952, aliou-se aos agricultores locais ao longo das décadas. Expandiu-se para fitofarmacêuticos, assistência técnica e formação. Com seis lojas e cerca de 10 mil associados e clientes, o Presidente Jorge Rafael falou sobre as prioridades da direcção.</p><p style="margin-top:18px;"><a href="https://www.ocorreiodalinha.pt/2024/11/12/jorge-rafael-servir-cada-vez-melhor-os-nossos-associados-e-clientes/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: O Correio da Linha</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-renasce" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Reportagem</div>
+        <h2>A Cooperativa renasce para apoiar o sector</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Jornal da Região</p><p>Com lojas em Sintra, Sabugo, Mem Martins, Colares, Arneiro e Albarraque, a Cooperativa reforça o apoio aos agricultores.</p><p style="margin-top:18px;"><a href="https://jregiao-online.webnode.pt/products/cooperativa-agricola-de-sintra-renasce-para-apoiar-sector/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Jornal da Região</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-regen" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Outubro 2026</div>
+        <h2>Projetos de Agricultura Regenerativa em Sintra-Cascais recebem novo financiamento</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p><strong>Data:</strong> Outubro de 2026</p><p>Vários projetos focados na agricultura regenerativa e na preservação ambiental na área do Parque Natural de Sintra-Cascais foram selecionados para financiamento. Esta iniciativa apoia práticas agrícolas sustentáveis, a compensação de emissões de carbono e a proteção dos ecossistemas locais.</p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Notícias regionais · Sintra-Cascais</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-reineta" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Outubro 2026</div>
+        <h2>13.º Festival da Maçã Reineta celebra a tradição agrícola em Fontanelas</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p><strong>Data:</strong> Outubro de 2026</p><p>A freguesia de São João das Lampas e Terrugem acolheu a 13.ª edição do Festival da Maçã Reineta em Fontanelas. O evento contou com a participação ativa da Cooperativa Agrícola de Sintra, destacando a qualidade desta variedade tradicional e promovendo o escoamento direto dos produtores locais.</p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Cooperativa Agrícola de Sintra / região</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-agroaruil" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Junho 2026</div>
+        <h2>8.ª edição da AGROARUIL destaca a Agricultura Regenerativa</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p><strong>Data:</strong> Junho de 2026</p><p>O Campo da Bola, em Aruil, recebeu mais uma edição da feira agrícola regional AGROARUIL. Sob o tema «Agricultura Regenerativa», o evento reuniu agricultores, técnicos e público para valorizar os produtos da região saloia e debater o futuro sustentável do setor.</p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: AGROARUIL · Aruil</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-horta" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Junho 2026</div>
+        <h2>Câmara Municipal de Sintra inaugura nova Horta Solidária em Mira-Sintra</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p><strong>Data:</strong> Junho de 2026</p><p>Foram atribuídos 50 novos talhões agrícolas no Parque Urbano de Agualva e Mira-Sintra no âmbito da rede de Hortas Solidárias. O projeto incentiva o cultivo biológico, o autossustento das famílias e inclui horticultura terapêutica.</p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Câmara Municipal de Sintra</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-pac" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">PAC / PEPAC</div>
+        <h2>Estudo de caso da GMN e a PAC com enfoque no PEPAC em Portugal</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> António Ferreira e Duarte Ribeiro · Agroportal</p><p>Análise sobre a PAC e o PEPAC em Portugal. Texto completo no Agroportal.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/estudo-de-caso-da-gmn-e-a-pac-com-especial-enfoque-no-pepac-em-portugal-antonio-ferreira-e-duarte-ribeiro/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-racas" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Pecuária</div>
+        <h2>Resistência genética: raças autóctones e carraças</h2>
+        <img class="cover" src="https://www.agroportal.pt/wp-content/uploads/2025/04/artigo-rcas-autoctones-750x375.png" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Genética das raças autóctones e resistência a carraças.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/resistencia-genetica-racas-autoctones-carracas/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-viticultura" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Viticultura</div>
+        <h2>Adaptação da viticultura às alterações climáticas</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Estratégias de adaptação da vinha às alterações climáticas.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/adaptacao-da-viticultura-as-alteracoes-climaticas/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-olival" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Olival</div>
+        <h2>Impacto das alterações climáticas na distribuição e produtividade do olival</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> CNC</p><p>Impacto climático no olival em Portugal.</p><p style="margin-top:18px;"><a href="https://www.cncalteracoesclimaticas.pt/content_page/publicacoes/o-impacto-das-alteracoes-climaticas-na-distribuicao-e-produtividade-do-olival" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: CNC Alterações Climáticas</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-pinheiro" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Floresta</div>
+        <h2>Pinheiro manso e alterações climáticas — perspetiva ecofisiológica</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Perspetiva ecofisiológica do pinheiro manso face ao clima.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/pinheiro-manso-e-alteracoes-climaticas-uma-perspetiva-ecofisiologica/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-vinhas_pest" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Vinha</div>
+        <h2>Uso de pesticidas nas vinhas portuguesas pode tornar-se um problema</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1543418219-44e30b057fea?auto=format&fit=crop&w=900&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Análise do uso de pesticidas na vinha em Portugal.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/uso-de-pesticidas-nas-vinhas-portuguesas-pode-tornar-se-um-problema-para-o-setor/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-desperdicio" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Tecnologia</div>
+        <h2>Tecnologia para reduzir o desperdício de pesticidas nas culturas</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Tecnologia para aplicação mais precisa de fitofarmacêuticos.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/investigadores-desenvolvem-tecnologia-para-reduzir-desperdicio-de-pesticidas-nas-culturas/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-diaphorina" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Alerta</div>
+        <h2>Alerta Diaphorina citri</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1507598641400-ec3536ba81bc?auto=format&fit=crop&w=900&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Alerta fitossanitário Diaphorina citri (citrinos).</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/alerta-diaphorina-citri/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-fogo" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Doença</div>
+        <h2>Fogo bacteriano (Erwinia amylovora) — atualização das zonas demarcadas</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=900&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Atualização das zonas demarcadas do fogo bacteriano.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/fogo-bacteriano-erwinia-amylovora-atualizacao-das-zonas-demarcadas-2/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-dgav" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">DGAV</div>
+        <h2>Mais de 16.500 contentores sob controlo fitossanitário em Sines (2025)</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> DGAV</p><p>Controlo fitossanitário de contentores no porto de Sines em 2025.</p><p style="margin-top:18px;"><a href="https://www.dgav.pt/destaques/noticias/mais-de-16-500-contentores-sujeitos-a-controlo-fitossanitario-pela-dgav-em-sines-durante-2025/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: DGAV</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-pera" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Pêra Rocha</div>
+        <h2>Cientistas travam doenças que ameaçam a pêra Rocha no Oeste</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=900&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Investigação sobre doenças da pêra Rocha no Oeste.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/cientistas-travam-doencas-que-ameacam-pera-rocha-na-regiao-oeste/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-nsafe" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Patente</div>
+        <h2>Fertiberia obtém a patente europeia de NSafe</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Patente europeia NSafe da Fertiberia.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/fertiberia-obtem-a-patente-europeia-de-nsafe/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-adp" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Biotecnologia</div>
+        <h2>ADP Fertilizantes obtém parecer ZERYA nos produtos biotecnológicos</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Parecer ZERYA para produtos biotecnológicos ADP.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/adp-fertilizantes-obtem-parecer-zerya-nos-produtos-biotecnologicos/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-fertighy" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Sustentabilidade</div>
+        <h2>Consórcio funda Fertighy para fertilizantes com baixas emissões</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1655130944329-b3a63166f6b5?auto=format&fit=crop&w=900&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Fertighy: fertilizantes com baixas emissões.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/consorcio-funda-empresa-fertighy-para-produzir-fertilizantes-com-baixas-emissoes/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-ovinos" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Genética</div>
+        <h2>Genética e dados para selecionar ovinos mais resistentes ao calor</h2>
+        <img class="cover" src="https://www.agroportal.pt/wp-content/uploads/2026/05/nennieinszweidrei-sheep-4036616_1280-750x375.jpg" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Genética e dados para ovinos mais resistentes ao calor.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/genetica-e-dados-podem-ajudar-a-selecionar-ovinos-mais-resistentes-ao-calor/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-robotica" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Robótica</div>
+        <h2>Robótica agrícola avança, mas fiabilidade e retorno travam a adoção</h2>
+        <img class="cover" src="https://www.agroportal.pt/wp-content/uploads/2025/06/agriculture-4208863_1920-750x375.jpg" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Robótica agrícola: avanços e barreiras à adoção.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/robotica-agricola-avanca-mas-fiabilidade-assistencia-tecnica-e-retorno-do-investimento-travam-adocao/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-ntg" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">NTG</div>
+        <h2>NTG: Bruxelas prepara regras para aplicar o novo regulamento</h2>
+        <img class="cover" src="https://www.agroportal.pt/wp-content/uploads/2025/06/dna-7090994_1920-750x375.jpg" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Novo regulamento NTG: regras em preparação em Bruxelas.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/ntg-bruxelas-prepara-regras-para-aplicar-novo-regulamento/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-batata_arroz" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Projeto europeu</div>
+        <h2>Portugal integra projeto europeu para batata e arroz mais resilientes</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Projeto europeu para batata e arroz mais resilientes.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/portugal-integra-projeto-europeu-para-desenvolver-culturas-de-batata-e-arroz-mais-resilientes/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-cot_frutos" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Cotações</div>
+        <h2>Frutos frescos e secos (26 out – 1 nov 2026)</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> GPP · Agroportal</p><p>Cotações semanais de frutos frescos e secos.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/cotacoes-frutos-frescos-e-secos-26-de-outubro-a-1-de-novembro-de-2026/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal / GPP</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-cot_ovinos" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Cotações</div>
+        <h2>Ovinos e caprinos (26 out – 1 nov 2026)</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1484557985045-edf25e08da73?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> GPP · Agroportal</p><p>Cotações semanais de ovinos e caprinos.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/cotacoes-ovinos-e-caprinos-26-de-outubro-a-1-de-novembro-de-2026/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal / GPP</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-cot_cereais" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Cotações</div>
+        <h2>Cereais (26 out – 1 nov 2026)</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> GPP · Agroportal</p><p>Cotações semanais de cereais.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/cotacoes-cereais-26-de-outubro-a-1-de-novembro-de-2026/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal / GPP</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-cot_flores" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Cotações</div>
+        <h2>Flores e folhagens (26 out – 1 nov 2026)</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> GPP · Agroportal</p><p>Cotações semanais de flores e folhagens.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/cotacoes-flores-e-folhagens-26-de-outubro-a-1-de-novembro-de-2026/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal / GPP</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-cot_hort" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Cotações</div>
+        <h2>Produtos hortícolas (26 out – 1 nov 2026)</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1597362925123-77861d3fbac7?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> GPP · Agroportal</p><p>Cotações semanais de produtos hortícolas.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/cotacoes-produtos-horticolas-26-de-outubro-a-1-de-novembro-de-2026/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal / GPP</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-cot_aves" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Cotações</div>
+        <h2>Aves e ovos (26 out – 1 nov 2026)</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> GPP · Agroportal</p><p>Cotações semanais de aves e ovos.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/cotacoes-aves-e-ovos-26-de-outubro-a-1-de-novembro-de-2026/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal / GPP</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-aviso1" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Avisos 17-07-2026</div>
+        <h2>Vinha, citrinos, hortícolas e ornamentais</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Avisos agrícolas de 17 de julho de 2026: vinha, citrinos, hortícolas e ornamentais.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/avisos-agricolas-17-07-2026-vinha-citrinos-horticolas-e-ornamentais/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-aviso2" role="dialog" aria-modal="true">
+    <div class="modal"><button type="button" class="modal-close" aria-label="Fechar">×</button>
+      <div class="modal-body">
+        <div class="tag">Avisos 15-06-2026</div>
+        <h2>Vinha e pomóideas</h2>
+        <img class="cover" src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=700&q=80" alt="" onerror="this.style.display='none'" /><p style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong>Autor / origem:</strong> Agroportal</p><p>Avisos agrícolas de 15 de junho de 2026: vinha e pomóideas.</p><p style="margin-top:18px;"><a href="https://www.agroportal.pt/avisos-agricolas-15-06-2026-vinha-e-pomoideas/" target="_blank" rel="noopener" class="btn-src">Abrir artigo original na fonte →</a></p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">Fonte: Agroportal</p>
+      </div>
+    </div>
+  </div>
+
+<footer>
+  <div class="container">
+    Cooperativa Agrícola de Sintra, C.R.L. · NIF 500 075 514<br>
+    <a href="index.html">Voltar ao site principal</a>
+  </div>
+</footer>
+<script>
+(function(){
+  var links=document.querySelectorAll(".sidebar a[data-panel]");
+  var panels=document.querySelectorAll(".panel");
+  links.forEach(function(link){
+    link.addEventListener("click",function(e){
+      e.preventDefault();
+      var id=link.getAttribute("data-panel");
+      links.forEach(function(l){l.classList.remove("active");});
+      link.classList.add("active");
+      panels.forEach(function(p){p.classList.toggle("active",p.id==="panel-"+id);});
+      history.replaceState(null,"","#"+id);
+    });
+  });
+  var hash=(location.hash||"").replace("#","");
+  if(hash){var t=document.querySelector('.sidebar a[data-panel="'+hash+'"]');if(t)t.click();}
+  function openModal(id){var el=document.getElementById("modal-"+id);if(el){el.classList.add("open");document.body.style.overflow="hidden";}}
+  function closeModal(o){o.classList.remove("open");document.body.style.overflow="";}
+  document.querySelectorAll(".open-artigo").forEach(function(n){
+    n.addEventListener("click",function(e){e.preventDefault();openModal(n.getAttribute("data-modal"));});
+  });
+  document.querySelectorAll(".modal-overlay").forEach(function(o){
+    o.addEventListener("click",function(e){if(e.target===o||e.target.classList.contains("modal-close"))closeModal(o);});
+  });
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")document.querySelectorAll(".modal-overlay.open").forEach(closeModal);});
+})();
+</script>
+</body>
+</html>
