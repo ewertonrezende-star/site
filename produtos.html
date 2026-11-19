@@ -295,6 +295,9 @@
         agricultura: 'Agricultura',
         pecuaria: 'Pecuária & rações',
         regionais: 'Produtos regionais',
+        animais: 'Animais de companhia',
+        bricolage: 'Bricolage',
+        drogaria: 'Drogaria',
         outros: 'Outros produtos'
       };
       var productsByPanel = {};
@@ -347,7 +350,10 @@
         if (/stihl/.test(text)) keys.push('stihl');
         if (/honda/.test(text)) keys.push('honda');
         if (/produto(s)? regionais|regional|vinho|azeite|mel regional|batata de consumo|cebola de consumo|alho de consumo|frutos secos|colares doc/.test(text)) keys.push('regionais');
-        if (/pecuaria|alimentacao animal|racao|racoes|aves|galinhas|coelhos|bovinos|ovinos|caprinos|suinos|cavalos|animais de companhia|cao|caes|gato|gatos|passaros|peixes|roedores|pet shop/.test(text)) keys.push('pecuaria');
+        if (/pecuaria|alimentacao animal|racao|racoes|aves|galinhas|coelhos|bovinos|ovinos|caprinos|suinos|cavalos/.test(text)) keys.push('pecuaria');
+        if (/animais de companhia|cao|caes|cachorro|gato|gatos|passaros|peixes|roedores|pet shop/.test(text)) keys.push('animais');
+        if (/bricolage|ferramentas eletricas|ferramentas manuais|epis|equipamento de protecao|geradores|escadotes/.test(text)) keys.push('bricolage');
+        if (/drogaria|produtos de limpeza|detergentes|higiene|embalagens|consumiveis/.test(text)) keys.push('drogaria');
         if (/agricultura|sementes|adubo|fertiliz|fitofarm|pulverizacao|enologia|substrato|corretivo de solo|maquinas de campo|conducao de culturas|embalagens/.test(text)) keys.push('agricultura');
         if (/jardim|jardinagem|rega|poda|relva|espacos verdes|maquinas de jardim|barbecue|churrasqueira|fios e cordas|ferramentas manuais/.test(text)) keys.push('jardim');
         if (!keys.length) keys.push('outros');
@@ -436,13 +442,34 @@
       }
 
       function renderProducts(products) {
-        var keys = ['stihl', 'honda', 'jardim', 'agricultura', 'pecuaria', 'regionais', 'outros'];
+        var keys = ['stihl', 'honda', 'jardim', 'agricultura', 'pecuaria', 'animais', 'bricolage', 'drogaria', 'regionais', 'outros'];
         keys.forEach(function (key) { productsByPanel[key] = []; });
         products.forEach(function (product) {
           classifyProduct(product).forEach(function (key) {
             if (!productsByPanel[key]) productsByPanel[key] = [];
             productsByPanel[key].push(product);
           });
+        });
+
+        var extraPanels = {
+          animais: 'Animais de companhia',
+          bricolage: 'Bricolage',
+          drogaria: 'Drogaria'
+        };
+        Object.keys(extraPanels).forEach(function (key) {
+          if (!productsByPanel[key] || !productsByPanel[key].length || document.getElementById(key)) return;
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'nav-btn';
+          btn.setAttribute('data-panel', key);
+          btn.innerHTML = extraPanels[key] + ' <span class="count" data-count="' + key + '">0</span>';
+          document.querySelector('.side').appendChild(btn);
+          var panel = document.createElement('section');
+          panel.className = 'panel';
+          panel.id = key;
+          panel.innerHTML = '<div class="panel-head"><h1>' + extraPanels[key] + '</h1><span class="result-count" data-result="' + key + '">0 produtos</span><p>Produtos publicados nesta categoria no WooCommerce.</p></div><div class="sub-title">Produtos do catálogo</div><div class="grid products-live-grid" data-live-grid="' + key + '"></div><p class="note">Catálogo da Cooperativa Agrícola de Sintra.</p>';
+          document.querySelector('.main').insertBefore(panel, emptyState);
+          btn.addEventListener('click', function () { showPanel(key); history.replaceState(null, '', '#' + key); });
         });
 
         if (productsByPanel.outros.length) {
