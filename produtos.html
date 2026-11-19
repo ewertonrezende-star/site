@@ -469,7 +469,6 @@
           panel.id = key;
           panel.innerHTML = '<div class="panel-head"><h1>' + extraPanels[key] + '</h1><span class="result-count" data-result="' + key + '">0 produtos</span><p>Produtos publicados nesta categoria no WooCommerce.</p></div><div class="sub-title">Produtos do catálogo</div><div class="grid products-live-grid" data-live-grid="' + key + '"></div><p class="note">Catálogo da Cooperativa Agrícola de Sintra.</p>';
           document.querySelector('.main').insertBefore(panel, emptyState);
-          btn.addEventListener('click', function () { showPanel(key); history.replaceState(null, '', '#' + key); });
         });
 
         if (productsByPanel.outros.length) {
@@ -486,7 +485,6 @@
             panel.id = 'outros';
             panel.innerHTML = '<div class="panel-head"><h1>Outros produtos</h1><span class="result-count" data-result="outros">0 produtos</span><p>Restantes artigos publicados no catálogo WooCommerce.</p></div><div class="sub-title">Produtos do catálogo</div><div class="grid products-live-grid" data-live-grid="outros"></div><p class="note">Artigos do catálogo da Cooperativa Agrícola de Sintra.</p>';
             document.querySelector('.main').insertBefore(panel, emptyState);
-            btn.addEventListener('click', function () { showPanel('outros'); history.replaceState(null, '', '#outros'); });
           }
         }
 
