@@ -402,6 +402,89 @@
       transition: background .15s, border-color .15s, transform .15s;
     }
 
+    /* ===== CATEGORIAS COM FOTOGRAFIAS DO SITE ATUAL ===== */
+    .home-category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 1120px;
+      margin: 0 auto 54px;
+    }
+    .home-category-card {
+      position: relative;
+      display: block;
+      min-width: 0;
+      aspect-ratio: 1.18 / 1;
+      overflow: hidden;
+      isolation: isolate;
+      border-radius: 12px;
+      background: var(--green-900);
+      box-shadow: 0 8px 22px rgba(15,42,23,.10);
+      color: #fff;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .home-category-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .45s ease;
+    }
+    .home-category-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(15,42,23,.02) 35%, rgba(0,0,0,.78) 100%);
+    }
+    .home-category-title {
+      position: absolute;
+      z-index: 2;
+      left: 20px;
+      right: 16px;
+      bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: clamp(15px, 1.45vw, 19px);
+      line-height: 1.2;
+      font-weight: 700;
+      text-shadow: 0 2px 8px rgba(0,0,0,.35);
+    }
+    .home-category-emoji {
+      display: grid;
+      place-items: center;
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.35);
+      font-size: 17px;
+      backdrop-filter: blur(5px);
+    }
+    .home-category-card:hover {
+      color: #fff;
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(15,42,23,.18);
+    }
+    .home-category-card:hover img { transform: scale(1.06); }
+    .home-category-card:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 4px;
+    }
+    @media (max-width: 900px) {
+      .home-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .home-category-card { aspect-ratio: 1.35 / 1; }
+    }
+    @media (max-width: 480px) {
+      .home-category-grid { gap: 10px; }
+      .home-category-card { aspect-ratio: 1 / 1; border-radius: 9px; }
+      .home-category-title { left: 12px; right: 10px; bottom: 12px; gap: 7px; font-size: 14px; }
+      .home-category-emoji { flex-basis: 29px; width: 29px; height: 29px; font-size: 15px; }
+    }
+
     /* ===== CATEGORIAS DO PORTFÓLIO ===== */
     .portfolio-categories {
       display: grid;
@@ -2483,46 +2566,46 @@
         <p>Explore as principais categorias do nosso catálogo e descubra a variedade de produtos disponíveis nas lojas da Cooperativa.</p>
       </div>
 
-      <div class="portfolio-categories" aria-label="Categorias do catálogo de produtos">
-        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Agricultura">
-          <span class="portfolio-category-icon" aria-hidden="true">🌱</span>
-          <span class="portfolio-category-name">Agricultura</span>
-          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+      <div class="home-category-grid" aria-label="Áreas de atividade e categorias">
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Pet-Shop">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/Hpage-Avenal.jpg" alt="Pet-Shop" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🐾</span>Pet-Shop</span>
         </a>
-        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Jardim">
-          <span class="portfolio-category-icon" aria-hidden="true">🌿</span>
-          <span class="portfolio-category-name">Jardim</span>
-          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Agricultura">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/Hpage-Honda.jpg" alt="Agricultura" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🌱</span>Agricultura</span>
         </a>
-        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Pecuária">
-          <span class="portfolio-category-icon" aria-hidden="true">🐄</span>
-          <span class="portfolio-category-name">Pecuária</span>
-          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Jardinagem">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/HPage-Sthill.jpg" alt="Jardinagem" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🌿</span>Jardinagem</span>
         </a>
-        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Animais de Companhia">
-          <span class="portfolio-category-icon" aria-hidden="true">🐾</span>
-          <span class="portfolio-category-name">Animais de Companhia</span>
-          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Espaços Verdes">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/HPage-Rainbird.jpg" alt="Espaços Verdes" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🌳</span>Espaços Verdes</span>
         </a>
-        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Bricolage">
-          <span class="portfolio-category-icon" aria-hidden="true">🛠️</span>
-          <span class="portfolio-category-name">Bricolage</span>
-          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Alimentação Animal">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/Hpage-Hipro.jpg" alt="Alimentação Animal" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🐄</span>Alimentação Animal</span>
         </a>
-        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Drogaria">
-          <span class="portfolio-category-icon" aria-hidden="true">🧴</span>
-          <span class="portfolio-category-name">Drogaria</span>
-          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Produtos Regionais">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/Hpage-Terramacao.jpg" alt="Produtos Regionais" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🍯</span>Produtos Regionais</span>
         </a>
-        <a class="portfolio-category" href="https://coopsintra.pt/produtos/" aria-label="Abrir catálogo — Produtos Regionais">
-          <span class="portfolio-category-icon" aria-hidden="true">🍯</span>
-          <span class="portfolio-category-name">Produtos Regionais</span>
-          <span class="portfolio-category-action">Explorar catálogo <span aria-hidden="true">↗</span></span>
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Vinhos da Região">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/HPage-ARColares.jpg" alt="Vinhos da Região" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🍇</span>Vinhos da Região</span>
         </a>
-        <a class="portfolio-category portfolio-category-all" href="https://coopsintra.pt/produtos/">
-          <span class="portfolio-category-icon" aria-hidden="true">▦</span>
-          <span class="portfolio-category-name">Ver todo o catálogo</span>
-          <span class="portfolio-category-action">12.500 referências <span aria-hidden="true">↗</span></span>
+        <a class="home-category-card" href="https://coopsintra.pt/produtos/" aria-label="Explorar Postes de Madeira">
+          <img src="https://coopsintra.pt/wp-content/uploads/2024/11/Hpage-Toscca.jpg" alt="Postes de Madeira" loading="lazy" />
+          <span class="home-category-overlay"></span>
+          <span class="home-category-title"><span class="home-category-emoji" aria-hidden="true">🪵</span>Postes de Madeira</span>
         </a>
       </div>
 
