@@ -929,6 +929,139 @@
     }
     .artigo a:hover { text-decoration: underline; }
 
+    /* ===== DESTAQUE PARA A PÁGINA DE ARTIGOS ===== */
+    .artigos.artigos-destaque {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--cream) 0%, #f1ecdf 100%);
+      padding: 76px 0;
+    }
+    .artigos-feature {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      align-items: stretch;
+      min-height: 390px;
+      overflow: hidden;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--green-800), var(--green-900));
+      box-shadow: 0 18px 48px rgba(15,42,23,.17);
+    }
+    .artigos-feature-photo {
+      position: relative;
+      min-height: 390px;
+      background: url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=85") center/cover no-repeat;
+    }
+    .artigos-feature-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(15,42,23,.04) 55%, rgba(15,42,23,.55) 100%);
+    }
+    .artigos-feature-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 48px clamp(28px, 5vw, 64px);
+      color: #fff;
+    }
+    .artigos-feature-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: #e5d19a;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+    }
+    .artigos-feature-kicker span {
+      width: 28px;
+      height: 2px;
+      background: var(--gold);
+    }
+    .artigos-feature-content h2 {
+      max-width: 520px;
+      margin-bottom: 16px;
+      color: #fff;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 3.6vw, 3rem);
+      line-height: 1.12;
+    }
+    .artigos-feature-content > p {
+      max-width: 480px;
+      margin-bottom: 22px;
+      color: rgba(255,255,255,.86);
+      font-size: 1.04rem;
+      line-height: 1.65;
+    }
+    .artigos-feature-topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .artigos-feature-topics span {
+      padding: 6px 12px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      color: #f4edda;
+      background: rgba(255,255,255,.08);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .artigos-feature-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      padding: 13px 21px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: var(--green-900);
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 7px 20px rgba(0,0,0,.16);
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .artigos-feature-link span {
+      font-size: 20px;
+      line-height: 1;
+      transition: transform .2s ease;
+    }
+    .artigos-feature-link:hover {
+      color: var(--green-900);
+      background: #d8b65e;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.2);
+    }
+    .artigos-feature-link:hover span { transform: translateX(4px); }
+    .artigos-feature-mark {
+      position: absolute;
+      right: 22px;
+      bottom: -42px;
+      z-index: 0;
+      color: rgba(255,255,255,.045);
+      font-family: "Playfair Display", serif;
+      font-size: clamp(7rem, 15vw, 13rem);
+      font-weight: 700;
+      line-height: 1;
+      pointer-events: none;
+    }
+    @media (max-width: 760px) {
+      .artigos.artigos-destaque { padding: 54px 0; }
+      .artigos-feature { grid-template-columns: 1fr; }
+      .artigos-feature-photo { min-height: 230px; }
+      .artigos-feature-photo::after {
+        background: linear-gradient(180deg, rgba(15,42,23,0) 45%, rgba(15,42,23,.42) 100%);
+      }
+      .artigos-feature-content { padding: 32px 26px 38px; }
+      .artigos-feature-content h2 { font-size: clamp(1.9rem, 7vw, 2.5rem); }
+    }
+
     /* ===== CAMPANHAS STIHL / HONDA ===== */
     .campanhas {
       background: var(--cream-dark);
@@ -2720,54 +2853,24 @@
     </div>  </section>
 
   <!-- AGRICULTURA DE SINTRA -->
-  <section class="artigos" id="artigos">
+  <section class="artigos artigos-destaque" id="artigos">
     <div class="container">
-      <div class="section-head">
-        <div class="tag">Artigos</div>
-        <h2>Conhecimento para o campo</h2>
-        <p>Prévia dos artigos e reportagens da Cooperativa. Veja todos organizados por tema.</p>
-      </div>
-
-      <div class="artigos-grid">
-        <article class="artigo">
-          <div class="artigo-img">
-            <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80" alt="Formação fitofarmacêuticos" />
+      <div class="artigos-feature">
+        <div class="artigos-feature-photo" role="img" aria-label="Paisagem agrícola portuguesa"></div>
+        <div class="artigos-feature-content">
+          <div class="artigos-feature-kicker"><span></span> CONHECIMENTO E INFORMAÇÃO</div>
+          <h2>O conhecimento também faz crescer a nossa terra.</h2>
+          <p>Descubra artigos técnicos, novidades, entrevistas e informações úteis para quem vive e trabalha no mundo rural.</p>
+          <div class="artigos-feature-topics" aria-label="Temas dos artigos">
+            <span>Agricultura</span>
+            <span>Formação</span>
+            <span>Notícias</span>
           </div>
-          <div class="artigo-body">
-            <div class="artigo-tag">Artigos técnicos</div>
-            <h3>Renovação do Cartão de Aplicador</h3>
-            <p>Mais de 2.000 pessoas formadas na Cooperativa. Saiba quando e como renovar o cartão.</p>
-            <a href="artigos.html#tecnicos">Ver artigos técnicos →</a>
-          </div>
-        </article>
-
-        <article class="artigo">
-          <div class="artigo-img">
-            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80" alt="Jorge Rafael" />
-          </div>
-          <div class="artigo-body">
-            <div class="artigo-tag">Imprensa</div>
-            <h3>Jorge Rafael: servir cada vez melhor os associados</h3>
-            <p>Entrevista ao presidente da Cooperativa no Correio da Linha.</p>
-            <a href="artigos.html#artigos">Ver artigos →</a>
-          </div>
-        </article>
-
-        <article class="artigo">
-          <div class="artigo-img">
-            <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=700&q=80" alt="Batata de semente" />
-          </div>
-          <div class="artigo-body">
-            <div class="artigo-tag">Artigos técnicos</div>
-            <h3>Batata de Semente | Bom cultivo, melhor colheita</h3>
-            <p>Como escolher a variedade adequada para uma colheita de qualidade.</p>
-            <a href="artigos.html#tecnicos">Ver artigos técnicos →</a>
-          </div>
-        </article>
-      </div>
-
-      <div style="text-align:center; margin-top:28px;">
-        <a href="artigos.html" class="btn btn-primary" style="display:inline-flex;">Ver todos os artigos →</a>
+          <a class="artigos-feature-link" href="artigos.html">
+            Explorar artigos <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="artigos-feature-mark" aria-hidden="true">1952</div>
       </div>
     </div>
   </section>
