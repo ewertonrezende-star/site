@@ -2083,6 +2083,53 @@
       .hist-preview-main { min-height: 220px; }
     }
 
+
+    /* ===== BOAS-VINDAS ===== */
+    .welcome-section {
+      padding: 54px 0 58px;
+      background: var(--cream);
+      text-align: center;
+    }
+    .welcome-inner {
+      width: min(850px, 92%);
+      margin: 0 auto;
+    }
+    .welcome-kicker {
+      display: inline-block;
+      color: var(--gold-dark);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .welcome-section h2 {
+      font-family: "Playfair Display", serif;
+      color: var(--green-900);
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .welcome-divider {
+      width: 58px;
+      height: 3px;
+      margin: 0 auto 22px;
+      background: var(--gold);
+      border-radius: 3px;
+    }
+    .welcome-section p {
+      color: var(--muted);
+      font-size: 1.04rem;
+      line-height: 1.75;
+      margin: 0 auto 13px;
+    }
+    .welcome-signature {
+      color: var(--green-800) !important;
+      font-weight: 700;
+      margin-top: 18px !important;
+      margin-bottom: 0 !important;
+    }
+
   </style>
 </head>
 <body>
@@ -2216,6 +2263,25 @@
         <p class="badge-line1">A EXPERIÊNCIA DO PASSADO</p>
         <p class="badge-line2">COM OS OLHOS POSTOS NO FUTURO</p>
       </div>
+    </div>
+  </section>
+
+  <!-- BOAS-VINDAS -->
+  <section class="welcome-section" id="boas-vindas">
+    <div class="welcome-inner">
+      <span class="welcome-kicker">Cooperativa Agrícola de Sintra</span>
+      <h2>Bem-vindo à Coopsintra</h2>
+      <div class="welcome-divider" aria-hidden="true"></div>
+      <p>
+        Desde 1952, a Cooperativa Agrícola de Sintra é feita de pessoas, tradição e dedicação
+        ao mundo rural. Trabalhamos diariamente para apoiar agricultores, produtores e famílias,
+        disponibilizando produtos, equipamentos e soluções para a agricultura, pecuária e jardinagem.
+      </p>
+      <p>
+        Mais do que uma cooperativa, somos um parceiro de confiança, próximo da comunidade
+        e comprometido com o desenvolvimento da nossa região.
+      </p>
+      <p class="welcome-signature">Coopsintra — Juntos cultivamos o futuro.</p>
     </div>
   </section>
 
