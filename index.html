@@ -2003,50 +2003,27 @@
       color: rgba(255,255,255,.75);
     }
 
-    /* Selo 75 anos (estilo Seleção) */
+    /* Selo comemorativo animado dos 75 anos */
     .hero-badge-74 {
       justify-self: center;
       text-align: center;
       color: #fff;
-      max-width: 280px;
+      max-width: 340px;
       animation: badgeIn 1s ease-out .2s both;
     }
+    .selo-75 {
+      width: clamp(180px, 22vw, 300px);
+      aspect-ratio: 1;
+      margin: 0 auto 8px;
+      animation: selo75-float 5s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px rgba(240,200,100,.35)) drop-shadow(0 8px 14px rgba(0,0,0,.45));
+    }
+    .selo-75-image { width: 100%; height: 100%; display: block; object-fit: contain; }
+    @keyframes selo75-float { 50% { transform: translateY(-8px); } }
+    @media (prefers-reduced-motion: reduce) { .selo-75 { animation: none; } }
     @keyframes badgeIn {
       from { opacity: 0; transform: translateY(16px) scale(.96); }
       to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .hero-badge-74 .laurel {
-      width: min(220px, 55vw);
-      height: auto;
-      margin: 0 auto;
-      filter: drop-shadow(0 8px 20px rgba(0,0,0,.35));
-    }
-    .hero-badge-74 .badge-text {
-      margin-top: -148px;
-      margin-bottom: 72px;
-      position: relative;
-      z-index: 2;
-    }
-    .hero-badge-74 .badge-num {
-      display: block;
-      font-family: "Playfair Display", serif;
-      font-size: 4.2rem;
-      font-weight: 700;
-      line-height: 1;
-      background: linear-gradient(180deg, #f5e6a8, #d4af37 50%, #a67c00);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: none;
-      filter: drop-shadow(0 2px 0 rgba(0,0,0,.15));
-    }
-    .hero-badge-74 .badge-anos {
-      display: block;
-      font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: 5px;
-      color: #e8c96a;
-      margin-top: 2px;
     }
     .hero-badge-74 .badge-line1 {
       font-size: 13px;
@@ -2548,55 +2525,8 @@
       </div>
 
       <div class="hero-badge-74" aria-label="75 anos de história">
-        <svg viewBox="0 0 220 220" class="laurel" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f5e6a8"/>
-              <stop offset="45%" stop-color="#d4af37"/>
-              <stop offset="100%" stop-color="#a67c00"/>
-            </linearGradient>
-          </defs>
-          <!-- left laurel -->
-          <g fill="none" stroke="url(#gold)" stroke-width="3.2" stroke-linecap="round">
-            <path d="M95 175 C55 160 35 125 38 90 C42 55 65 35 90 28"/>
-            <path d="M88 168 C58 152 42 122 44 92"/>
-            <path d="M82 160 C58 145 48 120 50 95"/>
-            <path d="M78 150 C60 138 54 118 56 100"/>
-          </g>
-          <g fill="url(#gold)" opacity=".95">
-            <ellipse cx="52" cy="70" rx="7" ry="12" transform="rotate(-25 52 70)"/>
-            <ellipse cx="48" cy="95" rx="7" ry="12" transform="rotate(-10 48 95)"/>
-            <ellipse cx="50" cy="120" rx="7" ry="12" transform="rotate(5 50 120)"/>
-            <ellipse cx="58" cy="142" rx="7" ry="11" transform="rotate(18 58 142)"/>
-            <ellipse cx="72" cy="158" rx="6.5" ry="11" transform="rotate(32 72 158)"/>
-            <ellipse cx="42" cy="55" rx="6" ry="10" transform="rotate(-35 42 55)"/>
-            <ellipse cx="62" cy="42" rx="6" ry="10" transform="rotate(-50 62 42)"/>
-            <ellipse cx="80" cy="32" rx="5.5" ry="9" transform="rotate(-60 80 32)"/>
-          </g>
-          <!-- right laurel -->
-          <g fill="none" stroke="url(#gold)" stroke-width="3.2" stroke-linecap="round">
-            <path d="M125 175 C165 160 185 125 182 90 C178 55 155 35 130 28"/>
-            <path d="M132 168 C162 152 178 122 176 92"/>
-            <path d="M138 160 C162 145 172 120 170 95"/>
-            <path d="M142 150 C160 138 166 118 164 100"/>
-          </g>
-          <g fill="url(#gold)" opacity=".95">
-            <ellipse cx="168" cy="70" rx="7" ry="12" transform="rotate(25 168 70)"/>
-            <ellipse cx="172" cy="95" rx="7" ry="12" transform="rotate(10 172 95)"/>
-            <ellipse cx="170" cy="120" rx="7" ry="12" transform="rotate(-5 170 120)"/>
-            <ellipse cx="162" cy="142" rx="7" ry="11" transform="rotate(-18 162 142)"/>
-            <ellipse cx="148" cy="158" rx="6.5" ry="11" transform="rotate(-32 148 158)"/>
-            <ellipse cx="178" cy="55" rx="6" ry="10" transform="rotate(35 178 55)"/>
-            <ellipse cx="158" cy="42" rx="6" ry="10" transform="rotate(50 158 42)"/>
-            <ellipse cx="140" cy="32" rx="5.5" ry="9" transform="rotate(60 140 32)"/>
-          </g>
-          <!-- bow -->
-          <path d="M95 178 Q110 192 125 178" fill="none" stroke="url(#gold)" stroke-width="3"/>
-          <circle cx="110" cy="182" r="5" fill="url(#gold)"/>
-        </svg>
-        <div class="badge-text">
-          <span class="badge-num">75</span>
-          <span class="badge-anos">ANOS</span>
+        <div class="selo-75">
+          <img src="selo-75.svg" alt="75 anos" class="selo-75-image" />
         </div>
         <p class="badge-line1">A EXPERIÊNCIA DO PASSADO</p>
         <p class="badge-line2">COM OS OLHOS POSTOS NO FUTURO</p>
