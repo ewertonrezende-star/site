@@ -2445,6 +2445,77 @@
       .historia-teaser-year { min-height: 210px; }
     }
 
+    
+    /* ===== ARTIGOS: VERSÃO COMPACTA NA HOME ===== */
+    .artigos.artigos-destaque {
+      padding: 30px 0;
+      background: var(--cream);
+    }
+    .artigos-feature {
+      grid-template-columns: 230px 1fr;
+      min-height: 0;
+      max-width: 980px;
+      margin: 0 auto;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(15,42,23,.10);
+    }
+    .artigos-feature-photo {
+      min-height: 210px;
+    }
+    .artigos-feature-content {
+      padding: 25px clamp(24px, 3.5vw, 42px);
+    }
+    .artigos-feature-kicker {
+      margin-bottom: 9px;
+      font-size: 10px;
+    }
+    .artigos-feature-content h2 {
+      max-width: 560px;
+      margin-bottom: 9px;
+      font-size: clamp(1.45rem, 2.3vw, 2rem);
+      line-height: 1.2;
+    }
+    .artigos-feature-content > p {
+      max-width: 600px;
+      margin-bottom: 14px;
+      font-size: .93rem;
+      line-height: 1.5;
+    }
+    .artigos-feature-topics {
+      gap: 7px;
+      margin-bottom: 15px;
+    }
+    .artigos-feature-topics span {
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+    .artigos-feature-link {
+      padding: 10px 17px;
+      font-size: 13px;
+    }
+    .artigos-feature-mark {
+      right: 12px;
+      bottom: -25px;
+      font-size: 7rem;
+    }
+    @media (max-width: 760px) {
+      .artigos.artigos-destaque { padding: 22px 0; }
+      .artigos-feature {
+        grid-template-columns: 120px minmax(0, 1fr);
+      }
+      .artigos-feature-photo { min-height: 190px; }
+      .artigos-feature-content { padding: 18px 18px 20px; }
+      .artigos-feature-content h2 { font-size: 1.35rem; }
+      .artigos-feature-content > p { font-size: .85rem; }
+      .artigos-feature-topics { margin-bottom: 12px; }
+      .artigos-feature-mark { display: none; }
+    }
+    @media (max-width: 480px) {
+      .artigos-feature { grid-template-columns: 1fr; }
+      .artigos-feature-photo { min-height: 125px; }
+      .artigos-feature-content { padding: 20px; }
+    }
+
 </style>
 </head>
 <body>
