@@ -482,7 +482,7 @@
               showPanel(id);
               history.replaceState(null, '', '#' + id);
             }
-          }, { once: true });
+          });
         });
         showPanel((location.hash || '').replace('#', '') || 'stihl');
         statusBox.style.display = 'none';
